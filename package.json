@@ -1,6 +1,6 @@
 {
   "name": "pos",
-  "version": "7.21.718",
+  "version": "7.21.719",
   "main": "main.js",
   "scripts": {
     "ng": "ng",
@@ -129,7 +129,7 @@
         "provider": "github",
         "owner": "fsabausa",
         "repo": "SI360-staging.git",
-        "token": "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"
+        "token": "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"
       }
     ]
   }
