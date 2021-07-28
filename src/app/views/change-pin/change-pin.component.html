@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="form-group">
+    <div class="row">
+      <div class="col-sm-6">
+          <div class="container">
+          <div class="row">
+            <div class="form-group" style="width: 100%;">
+                <br/><br/>
+              <div class="row">
+                <div class="col-sm-5"><label style="color: white;
+                  font-size: 32px;
+                  margin-top: 15px;
+                  font-weight: bold;">EMPLOYEE ID : </label></div>
+                  <div class="col-sm-7">                    
+                    <input type="text" id="EmpIDTextBox" class="form-control ChangePinTextBox" autocomplete="off"  value="{{utilityService.employeeID}}" (click)="textInputActive('employeeID','EmpIDTextBox')" />
+                  </div>
+              </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group" style="width: 100%;">
+                  <br/>
+                  <div class="row">
+                    <div class="col-sm-5"><label style="color: white;
+                      font-size: 32px;
+                      margin-top: 15px;
+                      font-weight: bold">NEW PIN : </label></div>
+                    <div class="col-sm-7">                    
+                        <input type="text" id="newPINTextBox" class="form-control ChangePinTextBox" autocomplete="off"  value="{{utilityService.convertedNewPIN}}" (click)="textInputActive('newPIN','newPINTextBox')"/>
+                      </div>
+                  </div>
+              </div>
+           </div>
+            <div class="row">
+              <div class="form-group" style="width: 100%;">
+                  <br/>
+                  <div class="row">
+                    <div class="col-sm-5"><label style="color: white;
+                      font-size: 32px;
+                      margin-top: 15px;
+                      font-weight: bold">CONFIRM PIN : </label></div>
+                    <div class="col-sm-7">                    
+                        <input type="text" id="confirmPINTextBox" class="form-control ChangePinTextBox" autocomplete="off"  value="{{utilityService.convertedConfirmPIN}}" (click)="textInputActive('confirmPIN','confirmPINTextBox')"/>
+                      </div>
+                  </div>
+              </div>
+          </div>
+           <div class="row">
+             <div class="form-group" style="width: 100%;">
+              <input type="button" class="btn-rectangle2 btn-green btn3d" style="font-weight: bold;" value="CHANGE PIN" (click)="changePIN();">
+              <input type="button" class="btn-rectangle2 btn-logoff btn3d" style="font-weight: bold" value="CANCEL" (click)="logOut();">
+            </div>
+           </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="row">
+          <div class="container" align="center">
+              <br/><br/>
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="1" (click)="getChangePinButtonValue(1);" />
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="2" (click)="getChangePinButtonValue(2);" />
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="3" (click)="getChangePinButtonValue(3);" />
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="4" (click)="getChangePinButtonValue(4);" />
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="5" (click)="getChangePinButtonValue(5);" />
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="6" (click)="getChangePinButtonValue(6);" />
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="7" (click)="getChangePinButtonValue(7);" />
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="8" (click)="getChangePinButtonValue(8);" />
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="9" (click)="getChangePinButtonValue(9);" />
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="0" (click)="getChangePinButtonValue(0);" />
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="00" (click)="getChangePinButtonValue(00);" />
+              <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="DEL" (click)="getChangePinButtonValue('DEL');" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+.fontColorWhite {
+  color: white;
+}
+
+.width100percent {
+  width: 90%;
+}
+
+input{
+  font-weight: bolder;
+}
+
+b{
+  font-size: 20px;
+}
+
+.larger-text{
+	font-size: 30px;
+	padding: 5px;
+}
+
+.selectedPaymentButton{
+	background: orange;
+}
+
+.box-2 {
+  border: 5px solid;
+  border-image: linear-gradient(45deg, rgb(0,143,104), rgb(250,224,66)) 1;
+}

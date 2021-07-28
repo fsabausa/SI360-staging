@@ -1,0 +1,18 @@
+<div>
+    <div class="rsoBackgroundColorHeader titleDiv font-weight-bold">SELECT TO MEAL TYPE</div>
+    <div class="rsoBackgroundWhite">
+            <div class="col-sm-6" *ngFor="let meal of utilityService.mealTypes" style="float:left;">
+                <input type="button" #meaplanDesc value={{meal}} class="btn-room btn-primary btn3d font-weight-bold" (click)="onClick(meaplanDesc.value)">
+            </div>
+            <div class="col-sm-6" style="float:left;">
+                <input type="button" value="Cancel" class="btn-room btn-danger btn3d font-weight-bold allCaps" (click)="cancel();">
+            </div>
+    </div>
+</div> 
+
+
+
+
+
+
+

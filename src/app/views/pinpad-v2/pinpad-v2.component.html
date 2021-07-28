@@ -1,0 +1,39 @@
+<div class="row">
+  <div class="col-sm-8">
+      <div style="    background-color: white;
+      height: 80px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      font-size: 45px;
+      text-align: center;border-color: black;
+border-style: groove;
+margin-left: 15px;
+margin-right: 15px;">
+<label class="pin-label font-weight-bold">{{_converted_numValue}}</label>
+</div>
+</div>
+  <div class="col-sm-4" align="center">
+      <b><h3 style="margin-top: 18px;word-wrap: break-word;">ENTER TIP AMOUNT FOR CHECK {{utilityService.selectedCheckChargeTipChecknum }}</h3></b>
+   </div>
+</div>
+<div class="row">
+  <div class="col-sm-8" align="center">
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="1" (click)="getNumKeyValue(1);" />
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="2" (click)="getNumKeyValue(2);" />
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="3" (click)="getNumKeyValue(3);" />
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="4" (click)="getNumKeyValue(4);" />
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="5" (click)="getNumKeyValue(5);" />
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="6" (click)="getNumKeyValue(6);" />
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="7" (click)="getNumKeyValue(7);" />
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="8" (click)="getNumKeyValue(8);" />
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="9" (click)="getNumKeyValue(9);" />  
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="DEL" (click)="getNumKeyValue('DEL');" />     
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="0" (click)="getNumKeyValue(0);" />
+      <input type="button" style="width: 32%" class="numKey btn-primary btn3d font-weight-bold" value="00" (click)="getNumKeyValue('00');" />        
+  </div>
+  <div class="col-sm-4" align="center">
+      <input type="button" style="height: 30%;" class="btn-rectangle2 btn-green btn3d font-weight-bold" value="OK" (click)="getNumKeyValue('OK');" />
+      <input type="button" style="height: 30%;" class="btn-rectangle2 btn-info btn3d font-weight-bold" value="CLEAR" (click)="getNumKeyValue('CLEAR');" />
+      <input type="button" style="height: 30%;" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" value="CANCEL" (click)="getNumKeyValue('CANCEL');" />
+  </div>
+</div>

@@ -1,0 +1,286 @@
+<div *ngIf="utilityService.readyForUse; else preparingApp">
+<div [ngSwitch]="utilityService.screen"  id="mainDiv" style="background-color:#343B45; height: 720px; width: 100%; overflow: hidden;" [class]="utilityService.setStatus">
+  <div *ngSwitchCase="'changePin'">
+    <div class="container">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-6">
+              <div class="container">
+              <div class="row">
+                <div class="form-group" style="width: 100%;">
+                    <br/><br/>
+                  <div class="row">
+                    <div class="col-sm-5"><label style="color: white;
+                      font-size: 32px;
+                      margin-top: 15px;
+                      font-weight: bold;">EMPLOYEE ID : </label></div>
+                      <div class="col-sm-7">                    
+                        <input type="text" id="EmpIDTextBox" class="form-control ChangePinTextBox" autocomplete="off" (keydown)="onKeydown($event)" value="{{utilityService.employeeID}}" (click)="textInputActive('employeeID','EmpIDTextBox')" />
+                      </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group" style="width: 100%;">
+                      <br/>
+                      <div class="row">
+                        <div class="col-sm-5"><label style="color: white;
+                          font-size: 32px;
+                          margin-top: 15px;
+                          font-weight: bold">NEW PIN : </label></div>
+                        <div class="col-sm-7">                    
+                            <input type="text" id="newPINTextBox" class="form-control ChangePinTextBox" autocomplete="off" (keydown)="onKeydown($event)" value="{{utilityService.convertedNewPIN}}" (click)="textInputActive('newPIN','newPINTextBox')"/>
+                          </div>
+                      </div>
+                  </div>
+               </div>
+                <div class="row">
+                  <div class="form-group" style="width: 100%;">
+                      <br/>
+                      <div class="row">
+                        <div class="col-sm-5"><label style="color: white;
+                          font-size: 32px;
+                          margin-top: 15px;
+                          font-weight: bold">CONFIRM PIN : </label></div>
+                        <div class="col-sm-7">                    
+                            <input type="text" id="confirmPINTextBox" class="form-control ChangePinTextBox" autocomplete="off" (keydown)="onKeydown($event)" value="{{utilityService.convertedConfirmPIN}}" (click)="textInputActive('confirmPIN','confirmPINTextBox')"/>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+               <div class="row">
+                 <div class="form-group" style="width: 100%;">
+                  <input type="button" class="btn-rectangle2 btn-green btn3d" style="font-weight: bold;" value="CHANGE PIN" (click)="changePIN();">
+                  <input type="button" class="btn-rectangle2 btn-logoff btn3d" style="font-weight: bold" value="CANCEL" (click)="returnToSignON();">
+                </div>
+               </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="container" align="center">
+                  <br/><br/>
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="1" (click)="getChangePinButtonValue(1);" />
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="2" (click)="getChangePinButtonValue(2);" />
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="3" (click)="getChangePinButtonValue(3);" />
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="4" (click)="getChangePinButtonValue(4);" />
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="5" (click)="getChangePinButtonValue(5);" />
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="6" (click)="getChangePinButtonValue(6);" />
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="7" (click)="getChangePinButtonValue(7);" />
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="8" (click)="getChangePinButtonValue(8);" />
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="9" (click)="getChangePinButtonValue(9);" />
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="0" (click)="getChangePinButtonValue(0);" />
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="00" (click)="getChangePinButtonValue(00);" />
+                  <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="DEL" (click)="getChangePinButtonValue('DEL');" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngSwitchCase="'signOn'">
+    <div class="container" style=" padding: 0px;margin: 0px;">
+      <div class="form-group">
+        <div class="col-sm-12" cdkDropList [cdkDropListData]="utilityService.draggableSignonTB" 
+                (cdkDropListDropped)="onItemDrop($event)"  cdkDropListOrientation="vertical">
+          <div class="row" *ngFor="let parentComp of utilityService.draggableSignonTB" cdkDrag >
+            <div *ngIf="parentComp.ControlPanel == 'signOnHead'" class="col-sm-12" style="background-color: #021CA3" id="SignOnTopPanel">
+              <div class="row">
+               <!--  <div class="col-1">
+                  <div class="close" onclick="closeApp();">
+                  </div>
+                </div> -->
+                <div class="col-sm-5">
+                  <div style="    background-color: white;
+                                                              height: 80px;
+                                                              margin-top: 5px;
+                                                              margin-bottom: 5px;
+                                                              font-size: 45px;
+                                                              text-align: center;border-color: black;
+                                                      border-style: groove;
+                                                      margin-left: 15px;
+                                                      margin-right: 15px;">
+                    <label class="pin-label font-weight-bold">{{utilityService.convertedpin}}</label>
+                  </div>
+                </div>
+                <div class="col-sm-3">                 
+                  <div style="background-color: white;
+                                                      height: 80px;
+                                                      margin-top: 5px;
+                                                      margin-bottom: 5px;
+                                                      font-size: 45px;
+                                                      text-align: center;
+                                                      border-color: black;
+                                                      border-style: groove;
+                                                      margin-left: 15px;
+                                                   ">
+                                                      <label class="font-weight-bold">{{utilityService.now | date: 'hh:mm:ss a'}}</label> 
+                                                      
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                  <div style="    background-color: white;
+                                                      height: 80px;
+                                                      margin-top: 5px;
+                                                      margin-bottom: 5px;
+                                                      font-size: 45px;
+                                                      text-align: center;border-color: black;
+                                                      border-style: groove;
+                                                      margin-left: 15px;
+                                                      margin-right: 15px;" >
+                                                    <label class="font-weight-bold">{{utilityService.now | date: 'MM/dd/yyyy'}}</label>  
+                                                    </div>
+                </div>             
+                <div class="col-sm-1" style="padding-top: 15px;padding-left: 50px;">
+                  <img src="{{showHandlerStatusClass()}}" width="30" height="60" (click)="changeHandlerStatus();" />                
+                </div>
+
+                <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}" style="margin-right: -20px;" >
+                  <svg height="30" width="30">
+                    <circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="parentComp.ControlPanel == 'signOnDetail'" class="col-sm-12" style="background-color: #000431;" id="SignOnBodyPanel">
+              <div class="row" id="CheckSelectedDetailDiv" 
+                  cdkDropList [cdkDropListData]="utilityService.draggableSignonLR" 
+                  (cdkDropListDropped)="onItemDrop($event)"  cdkDropListOrientation="horizontal">
+                <div class="{{comp.AppClass}}" *ngFor="let comp of utilityService.draggableSignonLR" cdkDrag >
+                  <div *ngIf="comp.ControlPanel == 'signOnNumpad'" align="center" class="col-sm-12" style="padding: 0px; margin: 0px;">
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="1" (click)="getbuttonValue(1);" />
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="2" (click)="getbuttonValue(2);" />
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="3" (click)="getbuttonValue(3);" />
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="4" (click)="getbuttonValue(4);" />
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="5" (click)="getbuttonValue(5);" />
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="6" (click)="getbuttonValue(6);" />
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="7" (click)="getbuttonValue(7);" />
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="8" (click)="getbuttonValue(8);" />
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="9" (click)="getbuttonValue(9);" />
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="DEL" (click)="getbuttonValue('DEL');" />
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="0" (click)="getbuttonValue(0);" />
+                    <input type="button" class="newbtn btn-primary btn3d font-weight-bold" value="00" (click)="getbuttonValue(00);" />
+                    <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}">
+                      <svg height="30" width="30"><circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" /></svg>
+                    </div>
+                  </div>
+                  <div *ngIf="comp.ControlPanel == 'signOnControlBtn'" class="col-sm-12">
+                    <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 110%;" 
+                      value="SIGN ON" (click)="getbuttonValue('SIGN ON');" />
+                    <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 110%;" 
+                      value="CLOCK IN" (click)="getbuttonValue('CLOCK IN');" />
+                    <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 110%;" 
+                      value="CLOCK OUT" (click)="getbuttonValue('CLOCK OUT');" />
+                    <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold"
+                      value="CHANGE PIN" style="font-size: 45px;width: 110%;" (click)="getbuttonValue('CHANGE PIN');"/>
+                    <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}" style="margin-right: -35px;">
+                      <svg height="30" width="30"><circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" /></svg></div>
+                  </div>
+                  
+                </div>
+                  
+                <div class="col-sm-4">     
+<!--                 <div id="notification" *ngIf="showUpdateNoti">
+                  <div class="row">
+                    <label id="message">{{UpdateMessage}}</label>
+                  </div>
+                   <div class="row">
+                     <div class="col-sm-6">
+                      <button id="close-button" (click)="closeNotification()" style="width: 100%;">
+                        CLOSE
+                      </button>
+                     </div>
+                     <div class="col-sm-6">
+                      <button id="restart-button" (click)="restartApp()" *ngIf="showRestartButt" style="width: 100%;">
+                        RESTART
+                      </button> 
+                     </div>             
+                   </div>                  
+                  </div>  -->   
+                    
+                  <div style="color: white;font-weight: bold;font-size: 15px;">
+                      <label>
+                     {{utilityService.UpdateNotificationMsg }} - {{utilityService.progressBarValue}}</label>              
+                  </div>
+
+                  <div style="
+                  color: white;
+                  font-weight: bold;
+                  font-size: 22px;
+              ">
+<!--                       <label style="    position: absolute;
+                      bottom: 0;
+                      right: 25px;">Version {{utilityService.appVersion}}</label>  -->
+                      <label style="    position: absolute;
+                      bottom: 0;
+                      right: 25px;" (click)="showDiaglogReleaseNotes();">{{utilityService.appVersion}}</label> 
+                  </div>
+
+                </div>
+              </div>
+              <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}" style="margin-right: -20px;">
+                <svg height="30" width="30">
+                  <circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" />
+                </svg>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div *ngSwitchCase="'launchingScreen'">
+  </div>
+</div>
+</div>
+
+<ng-template #preparingApp>
+  <div style="background-color: #000431; height: 100vh;">
+    <br/>  <br/>  <br/>  <br/>
+    <mat-progress-bar mode="indeterminate" style="height: 60px;"></mat-progress-bar>
+    <br/><br/>
+    <div align="center">
+      <label style="color: white;"><H1>Launching SI360 App</H1></label>
+    </div>
+  </div> 
+</ng-template>
+
+
+
+<!-- <div bsModal #diaglogReleaseNotes="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>SI360 Version & Release Notes</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+    <div class="col-12" style="height: 400px;">
+      <pdf-viewer [src]="pdfSource" [original-size]="false"></pdf-viewer>
+    </div>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-8">
+        
+     </div>
+     <div class="col-4">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="Close" (click)="hideDiaglogReleaseNotes();" />
+     </div>
+ </div>
+</div>
+</div>
+</div> -->
+
+
+
+
+
+
+
+
+
+

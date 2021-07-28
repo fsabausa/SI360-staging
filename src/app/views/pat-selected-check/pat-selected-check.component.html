@@ -1,0 +1,55 @@
+<div [ngSwitch]="utilityService.screen" [class]="utilityService.setStatus" id="mainDiv" style="background-color:#343B45;">
+    <div id="mainDiv">
+        <div class="container">
+            <div class="col-sm-12" cdkDropList [cdkDropListData]="utilityService.draggablePATComponentsTB" 
+                (cdkDropListDropped)="onItemDrop($event)"  cdkDropListOrientation="vertical">
+
+                <!-- <div class="cont-handler" cdkDragHandle>
+                    <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+                </div> -->
+                <div *ngFor="let parentComp of utilityService.draggablePATComponentsTB" cdkDrag >
+                    <div  *ngIf="parentComp.ControlPanel == 'checkdetaildiv'" class="row">
+                        <div class="col-sm-12">
+                            <div class="row" id="CheckSelectedDetailDiv" style="height: 620px;"
+                                cdkDropList [cdkDropListData]="utilityService.draggablePATComponentsLR" 
+                                (cdkDropListDropped)="onItemDrop($event)"  cdkDropListOrientation="horizontal">
+
+
+                                <div class="{{comp.AppClass}}" *ngFor="let comp of utilityService.draggablePATComponentsLR" cdkDrag style="background: #343B45;">
+
+                                    <pat-split-selection class="col-sm-4" *ngIf="comp.ControlPanel == 'split'"></pat-split-selection>
+                                    <pat-seat-selection class="col-sm-8" *ngIf="comp.ControlPanel == 'seat'"></pat-seat-selection>
+                                    <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}"><svg height="30" width="30"><circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" /></svg></div>
+                                </div>
+                                <!-- <div class="col-sm-4" style="background-color:#343B45;" cdkDrag>
+                                    <pat-split-selection></pat-split-selection>
+                                </div>
+
+                                <div class="col-sm-8 " style="background-color:#D2D3D4" cdkDrag>
+                                    <pat-seat-selection></pat-seat-selection>
+                                </div> -->
+                            </div>
+                            <div cdkDragHandle class="small-handler"></div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="parentComp.ControlPanel == 'checkbuttondiv'">
+                        <div class="col-sm-4">                           
+                            <input type="button" value="ACCOUNT CHARGE" class="btn-room btn-green btn3d allpadding5Width font-weight-bold" (click)="getbuttonActionPAT('PATResidentCharge');" />
+                            <!-- <input type="button" value="{{utilityService.defaultMedia.MediaDescription }}" class="btn-room btn-green btn3d allpadding5Width font-weight-bold" (click)="getbuttonActionPAT('PATResidentCharge');" /> -->
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="button" value="PAY CHECK" class="btn-room btn-green btn3d allpadding5Width font-weight-bold" (click)="getbuttonActionPAT('PATPaymentSelection');" />
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="button" value="RETURN TO POS" class="btn-room btn-green btn3d allpadding5Width font-weight-bold" (click)="getbuttonActionRSO('BACK TO FLOOR PLANS')" />
+                            <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}"><svg height="30" width="30"><circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" /></svg></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

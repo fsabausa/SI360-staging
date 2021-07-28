@@ -1,0 +1,189 @@
+<!-- <div *ngSwitchCase="'payAtTAblePaymentSelection'"> -->
+<div [ngSwitch]="utilityService.screen" [class]="utilityService.setStatus" id="mainDiv" style="background-color:#343B45;">
+    <div class="container">
+        <div class="row" style="height: 100vh;">
+            <div class="col-sm-12" style="background-color:#343B45;">
+                <div class="row">
+                    <div class="col-sm-12 titleHeader">
+                        <div class="allpadding5Width" align="center">
+                            <div class="text-left">
+                                <label class="fontColorWhite">Selected Payment Option</label>
+                            </div>
+                            <div class="text-center">
+                                <h2 class="fontColorWhite" style="margin-top: -20px;font-weight: bold;">{{utilityService.payment_Option}}</h2></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4" style="padding: 5px;">
+                        <app-pinpad></app-pinpad>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="form-group col-sm-12" style="height: 20px; margin-top: 5px;">
+                                        <label class="text-left text-white d-block">
+                                            <b>TOTAL PAYMENT:</b>
+                                        </label>
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <label class="aggregate-label bg-white larger-text">
+                                            <b style="font-size: 35px;">{{utilityService.inputedAmount}}</b>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-12" style="height: 20px;">
+                                        <label class="text-left text-white d-block">
+                                            <b>BALANCE:</b>
+                                        </label>
+                                    </div>
+                                  <!--   <div class="form-group col-sm-6" style="height: 20px;">
+                                        <label class="text-left text-white d-block">
+                                            <b>TIP:</b>
+                                        </label>
+                                    </div> -->
+                                    <div class="form-group col-sm-12">
+                                        <label class="aggregate-label bg-white larger-text">
+                                            <b style="font-size: 35px;">{{balance}}</b>
+                                        </label>
+                                    </div>
+                                  <!--   <div class="form-group col-sm-6 " (click)="highlightTip()" >
+                                        <label id="tipDiv" class="aggregate-label bg-white larger-text">
+                                            <b style="font-size: 35px;">{{utilityService.inputed_tip}}</b>
+                                        </label>
+                                    </div> -->
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-sm-12" style="height: 20px;">
+                                        <label class="text-left text-white d-block">
+                                            <b>REMAINING AMOUNT:</b>
+                                        </label>
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <label class="aggregate-label bg-white larger-text">
+                                            <b style="font-size: 35px;">{{getRemainingAmount()}}</b>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" style="padding-left: 10px;">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input type="button" value="PAY CHECK" class="btn-pat btn-orange btn3d width100percent" (click)="payCheck(utilityService.payment_media,utilityService.payment_type,utilityService.globalInstance.SelectedSaleId,utilityService.total,utilityService.balance,utilityService.globalInstance.SelectedCustomerId,0);" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input type="button" value="BACK" class="btn-pat btn-danger btn3d width100percent" (click)="getbuttonActionPAT('PATCheckSelected')" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input type="button" value="BACK TO TABLE MGMT" 
+                                        class="btn-pat btn-primary btn3d width100percent" 
+                                        (click)="backToFloorPlan('BACK TO FLOOR PLANS', null, null, null, null, null, null, false);"
+                                        style="word-wrap: break-all; white-space:normal; height: 100%;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-11">
+                                <div class="row">
+                                    <div class="form-group col-sm-12" style="height: 20px; margin-top: 5px;">
+                                        <label class="text-left text-white d-block">
+                                            <b>PAYMENT TYPES: <b style="color:orange;">{{selectedPayment}}</b></b>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row" style="overflow-y: scroll; height:35vh;">
+                                    <div class="col-sm-4" *ngFor="let media of utilityService._media; let i = index">
+                                        <button (click)="findMediaType(media.MediaName,i)" 
+                                            class="btn-pat2 btn-primary btn3d width100percent" id="payindx{{i}}" 
+                                            style="font-size:30px;white-space: normal; word-wrap: break-word; 
+                                                    width: 100%; font-weight: bolder;">
+                                            {{media.ButtonText.toUpperCase()}}
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button (click)="findMediaType('authorization',-1)" 
+                                            class="btn-pat2 btn-primary btn3d width100percent" id="payindx-1" 
+                                            style="font-size:30px;white-space: normal; word-wrap: break-word; 
+                                                    width: 100%; font-weight: bolder;">
+                                            AUTHORIZATION
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div bsModal #diaglogCreditCard="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header" align="center">
+        <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left" ><b style="font-size: 40px;  text-transform: uppercase;">{{selectedPayment}}</b></h1></div>
+     </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+    <div class="col-12"><h2 style="text-align: center;
+        vertical-align: middle;
+        line-height: 7;
+        font-size: 45px;">{{utilityService.creaditCardMsg}}</h2></div>
+   </div>
+ </div>
+ <div class="modal-footer" >
+            <div class="col-6" *ngIf="utilityService.creditCardDialogButtons">
+                <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                              value="CANCEL" (click)="hidediaglogCreditCard();"/>
+             </div>
+             <div class="col-6" *ngIf="utilityService.creditCardDialogButtons">
+                <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                              value="RETRY" (click)="creditCard();" />
+             </div>
+            <div class="col-12" *ngIf="utilityService.authorizationOkBtn">
+                    <input type="button" class="btn-rectangle2 btn-success btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                    value="OK" (click)="hidediaglogCreditCard();"/>
+             </div>
+     </div>
+ </div>
+</div>
+</div>
+
+<div bsModal #diaglogCreditCardConfirmation="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header" align="center">
+        <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left" ><b style="font-size: 40px;  text-transform: uppercase;">CONFIRMATION</b></h1></div>
+     </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+    <div class="col-12"><h2 style="text-align: center;
+        vertical-align: middle;
+        line-height: 7;
+        font-size: 45px;">Would you like to have a copy of the receipt?</h2></div>
+   </div>
+ </div>
+ <div class="modal-footer" >
+            <div class="col-6">
+                <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                              value="NO" (click)="hideDialogCreditCardPrintReceipt();"/>
+             </div>
+            <div class="col-6">
+                    <input type="button" class="btn-rectangle2 btn-success btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                    value="YES" (click)="yesToPrintReceipt();"/>
+             </div>
+     </div>
+ </div>
+</div>
+</div>

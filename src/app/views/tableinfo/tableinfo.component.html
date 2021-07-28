@@ -1,0 +1,173 @@
+<div class="tableinfo-frame rsoBackgroundColorBody">
+	<div class="col-12">
+		<div class="row">
+			<div class="col-4">
+					<mat-card>
+						<div class="row">
+							<div class="col-7" align="right">
+								<h5><b>TABLE :</b> </h5>
+							</div>
+							<div class="col-5" align="left">
+								<h5><b>{{utilityService.globalInstance.SelectedTableName}}</b></h5>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-7" align="right">
+								<h5><b>CHECK # :</b></h5>
+							</div>
+							<div class="col-5" align="left">
+								<h5><b>{{utilityService.globalInstance.SelectedTableDetail.Checknumber}}</b></h5>
+							</div>
+						</div>
+					</mat-card>
+			</div>
+			<div class="col-4">
+				<mat-card>
+					<div class="row">
+						<div class="col-7" align="right">
+							<h5><b>GROSS :</b></h5>
+						</div>
+						<div class="col-5" align="left">
+							<h5><b>{{utilityService.subTotal}}</b></h5>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-7" align="right">
+							<h5><b>TAX :</b></h5>
+						</div>
+						<div class="col-5" align="left">
+							<h5><b>{{utilityService.totalTax}}</b></h5>
+						</div>
+					</div>
+				</mat-card>
+			</div>
+			<div class="col-4">
+				<mat-card>
+					<div class="row">
+						<div class="col-7" align="right">
+							<h5><b>TOTAL :</b></h5>
+						</div>
+						<div class="col-5" align="left">
+							<h5><b>{{utilityService.grandtotal}}</b></h5>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-7" align="right">
+							<h5><b>ORDER SENT :</b></h5>
+						</div>
+						<div class="col-5" align="left">
+							<h5><b></b></h5>
+						</div>
+					</div>
+				</mat-card>
+			</div>
+		</div>
+		<br/>
+		<div class="row tableinfo-header">
+			<div class="col-3">
+				<h5><b>SEAT</b></h5>
+			</div>
+			<div class="col-9">
+				<h5><b>ORDER DETAILS</b></h5>
+			</div>
+		</div>
+		<div class="row tableinfo-content" *ngFor="let meal of utilityService.globalInstance.SelectedTableDetail.GetSaleItems">
+			<div class="col-3 tableinfo-content-border">
+				<h4 style="text-transform: uppercase;">{{meal.SeatNumber}}</h4>
+				<h5>CUSTOMER NAME : {{meal.Description.replace("! *", "")}}</h5>
+			</div>
+			<div class="col-9 tableinfo-content-border">
+				<div class="row col-12" *ngFor="let menuItem of meal.GetMenuItems" > 
+					<div class="col-1">
+						<div [ngStyle]="css_enable_green_dot(menuItem.WasPrinted,menuItem.RemotePrns,menuItem.SentToKitchen)"></div>
+					</div>	
+					<div class="col-7">
+						<h5 [ngStyle]="addPadding(menuItem.IsModifier)">{{ menuItem.MenuItemName }}</h5>
+						<mat-divider></mat-divider>
+					</div>
+					<div class="col-4">
+						<h5 *ngIf="!menuItem.IsModifier">{{ menuItem.Price }}</h5>
+						<mat-divider></mat-divider>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- 	<div class="col-12">
+		<div class="row tableinfo-title">
+			<div class="col-4" style="display: inline-block; text-align: left;">
+				<div class="row col-12">
+					<div class="col-6" align="right">
+						<h5><b>TABLE  :</b> </h5>
+					</div>
+					<div class="col-6" align="left">
+						<h5><b>{{utilityService._tableNameOrderScreen}}</b></h5>
+					</div>
+				</div>
+				<div class="row col-12">
+					<div class="col-6" align="right">
+						<h5><b>CHECK #  :</b></h5>
+					</div>
+					<div class="col-6" align="left">
+						<h5><b>{{utilityService.globalInstance.SelectedSaleId}}</b></h5>
+					</div>
+				</div>
+			</div>
+			<div class="col-4" style="display: inline-block; text-align: left;">
+				<div class="row col-12">
+					<div class="col-6" align="right">
+						<h5><b>GROSS  :</b></h5>
+					</div>
+					<div class="col-6" align="left">
+						<h5><b>{{utilityService.subTotal}}</b></h5>
+					</div>
+				</div>
+				<div class="row col-12">
+					<div class="col-6" align="right">
+						<h5><b>TAX  :</b></h5>
+					</div>
+					<div class="col-6" align="left">
+						<h5><b>{{utilityService.totalTax}}</b></h5>
+					</div>
+				</div>
+			</div>
+			<div class="col-4" style="display: inline-block; text-align: left;">
+				<div class="row col-12">
+					<div class="col-6" align="right">
+						<h5><b>TOTAL  :</b></h5>
+					</div>
+					<div class="col-6" align="left">
+						<h5><b>{{utilityService.grandtotal}}</b></h5>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row tableinfo-header">
+			<div class="col-3">
+				<h5><b>SEAT</b></h5>
+			</div>
+			<div class="col-9">
+				<h5><b>ORDER DETAILS</b></h5>
+			</div>
+		</div>
+		<div class="row tableinfo-content" *ngFor="let meal of utilityService.mealPlanCustomerDetail">
+			<div class="col-3 tableinfo-content-border">
+				<h4 style="text-transform: uppercase;">{{meal.SeatNumber}}</h4>
+				<h5>CUSTOMER NAME : {{meal.Description.replace("! *", "")}}</h5>
+			</div>
+			<div class="col-9 tableinfo-content-border">
+				<div class="row col-12" *ngFor="let menuItem of meal.GetMenuItems" [ngStyle]="getBorderStyle(menuItem.IsModifier)"> 
+					<div class="col-1">
+						<div [ngStyle]="css_enable_green_dot(menuItem.WasPrinted,menuItem.RemotePrns,menuItem.SentToKitchen)"></div>
+					</div>	
+					<div class="col-7">
+						<h5 [ngStyle]="addPadding(menuItem.IsModifier)">{{ menuItem.MenuItemName }}</h5>
+					</div>
+					<div class="col-4">
+						<h5 *ngIf="!menuItem.IsModifier">{{ menuItem.Price }}</h5>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+</div>

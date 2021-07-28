@@ -1,0 +1,212 @@
+<div [ngSwitch]="utilityService.screen" [class]="utilityService.setStatus" id="mainDiv" style="background-color:#343B45;" [@cardAnimator]="utilityService.animationState" (@cardAnimator.done)="resetAnimationState()">
+  <div *ngSwitchCase="'payAtTableResidentCharge'">
+    <div class="container">
+      <div class="row" style="background-color:#D2D3D4;" id="ResidentChargeUIDiv">
+        <div class="col-sm-12">
+          <div class="row">
+            <div class="col-sm-12" style="background-color: #0b0ba0;">
+              <div class="allpadding5Width font-weight-bold" style="color: #FFFFFF;font-size: 25px;">
+                <label><b>TABLE # :</b></label> &nbsp;<label><b>{{utilityService.patTableName}}</b></label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <br />
+            <div class="allpadding5Width" id="ResidentChargeUITableDiv">
+              <table class="table table-striped">
+                <thead style="background-color: #676769;">
+                <th class="fontColorWhite font-weight-bold"><label style="font-size: 35px;">SEAT #</label></th>
+                <th class="fontColorWhite font-weight-bold"><label style="font-size: 35px;">CHECK DESCRIPTION</label></th>
+                <th class="fontColorWhite font-weight-bold"><label style="font-size: 35px;">PRICE</label></th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let g of utilityService.guestCheck">
+                    <td class="allCaps font-weight-bold"><label style="font-size: 35px;">{{g.SeatNo}}</label></td>
+                    <td class="allCaps font-weight-bold"><label style="font-size: 25px;">{{g.ReceiptDescription}}</label></td>
+                    <td style="text-align: right;" class="font-weight-bold"><label style="font-size: 25px;">{{g.ActualPrice}}</label></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row" style="background-color: #343B46;height: 75px;">
+            <div class="col-sm-12">
+              <div class="form-inline">
+                <div class="form-group col-sm-4" style="height: 50px;">
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <label for="subTotalLabel" class="col-sm-12 font-weight-bold" style="text-align: center !important;
+                      display: block;
+                      color: white;
+                      margin-top: 10px;
+                      font-size: 40px;"><b>Sub Total:</b></label>
+                    </div>
+                    <div class="col-sm-4">
+                      <input type="text" disabled class="form-control font-weight-bold" id="subTotalLabel" placeholder="{{utilityService.subTotal}}" value="{{utilityService.subTotal}}" style="height: 58px;font-size:25px;font-weight: bold;margin-top: 10px;width: 100%;">
+                    </div>
+                  </div>
+                  
+       <!--            <label id="subTotalLabel" class="col-sm-8 aggregate-label font-weight-bold" style="background-color: white"><b>{{utilityService.subTotal}}</b></label> -->
+                </div>
+                <div class="form-group col-sm-4" style="height: 50px;">
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <label class="taxLabel" class="col-sm-4 font-weight-bold" style="text-align: center !important;
+                      display: block;
+                      color: white;
+                      margin-top: 10px;
+                      font-size: 40px;"><b>Tax:</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" disabled class="form-control font-weight-bold" id="taxLabel" placeholder="{{utilityService.totalTax}}" value="{{utilityService.totalTax}}" style="height: 58px;font-size:25px;font-weight: bold;margin-top: 10px;width: 100%;">
+                    </div>
+                  </div>
+                  
+                 <!--  <label id="taxLabel" class="col-sm-8 aggregate-label font-weight-bold" style="background-color: white"><b>{{utilityService.totalTax}}</b></label> -->
+                </div>
+                <div class="form-group col-sm-4" style="height: 50px;">
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <label class="totalAmtLabel" class="col-sm-4 font-weight-bold" style="text-align: center !important;
+                      display: block;
+                      color: white;
+                      margin-top: 10px;
+                      font-size: 40px;"><b>Total:</b></label>
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" disabled class="form-control font-weight-bold" id="totalAmtLabel" placeholder="{{utilityService.grandtotal}}" value="{{utilityService.grandtotal}}" style="height: 58px;font-size:25px;font-weight: bold;margin-top: 10px;width: 100%;">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="background-color: #343B46;height:117px;">
+            <div class="allpadding5Width">
+              <div class="row">
+                <div class="col-sm-6">
+                </div>
+              </div>
+              <div class="col-sm-12">
+                <div class="float-right">
+
+                  <input type="button" class="btn-pat btn-green btn3d font-weight-bold" value="BACK" style="float: right;"
+                         (click)="getbuttonActionPAT('PATCheckSelected')" />
+                  <input type="button" class="btn-pat btn-green btn3d font-weight-bold" value="SETTLE CHECK" style="float: right;"
+                         (click)="onClickSettleCheckResidentCharge();" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngSwitchCase="'payAtTableGuestCheckSearch'">
+    <div class="container text-white">
+      <div class="row">
+        <div class="col-sm-7">
+          <div class="float-none">
+            <div class="row">
+              <div class="col-sm-2"><button class="btn-flex btn-logoff btn3d"><mat-icon>arrow_back</mat-icon></button></div>
+              <div class="col-sm-7"><input type="text" placeholder="Find Table No." class="form-control" style="height: 52px; margin-top: 4px;" /></div>
+              <div class="col-sm-2"><button class="btn-flex btn-success btn3d"><mat-icon>search</mat-icon></button></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-5">
+          <div class="row">
+            <div class="offset-sm-2 col-sm-6"><button class="btn-flex btn-primary btn3d">REOPEN CHECK</button></div>
+            <div class="col-sm-2"><button class="btn-flex btn3d btn-gray"><mat-icon>settings</mat-icon></button></div>
+            <div class="col-sm-2"><button class="btn-flex btn3d btn-gray"><mat-icon>bluetooth</mat-icon></button></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-5">
+          <div class="row">
+            <div class="col-sm-12" style="background-color:#FFFFFF">
+              <div class="row">
+                <div class="col-sm-6 allpadding5Width">
+                  <label class="text-black" style="padding-left: 10px;">&nbsp;<b>Employee ID: </b></label>&nbsp;<label style="color:#1575BB" class="allCaps"><b> 11</b></label>
+                </div>
+              </div>
+              <div class="allpadding5Width width100percent" style="height: 600px; overflow-y: scroll;">
+                <table class="table table-striped">
+                  <thead style="background-color: #676769;">
+                  <th class="fontColorWhite">TABLE #</th>
+                  <th class="fontColorWhite">CUSTOMER NAME</th>
+                  <th class="fontColorWhite">CHECK DESCRIPTION</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let g of utilityService.guestCheck">
+                      <td class="allCaps">{{g.SeatNo}}</td>
+                      <td class="allCaps">{{g.ReceiptDescription}}</td>
+                      <td>{{g.Price}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-7">
+          <div class="row">
+            <div class="col-sm-12" style="background-color:#FFFFFF">
+              <div class="row">
+                <div class="col-sm-6 allpadding5Width">
+                  <label class="text-black" style="padding-left: 10px;"><b>TABLE #: </b></label>&nbsp;<label style="color:#1575BB" class="allCaps"><b> 11</b></label>
+                </div>
+                <div class="col-sm-6 allpadding5Width">
+                  <label class="text-black"><b>GUEST CHECK #: </b></label>&nbsp;<label style="color:#1575BB" class="allCaps"><b> 560</b></label>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="allpadding5Width width100percent" style="height: 600px; overflow-y: scroll;">
+                    <table class="table table-striped">
+                      <thead style="background-color: #676769;">
+                      <th class="fontColorWhite">SEAT NO.</th>
+                      <th class="fontColorWhite">ITEM DESCRIPTION</th>
+                      <th class="fontColorWhite">PRICE</th>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let g of utilityService.guestCheck">
+                          <td class="allCaps">{{g.SeatNo}}</td>
+                          <td class="allCaps">{{g.ReceiptDescription}}</td>
+                          <td>{{g.Price}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-9">
+          <div class="form-inline">
+            <div class="form-group col-sm-4" style="height: 50px;">
+              <label for="subTotalLabel" class="col-sm-4"> &nbsp;&nbsp;Sub Total: </label>
+              <label id="subTotalLabel" class="col-sm-8 aggregate-label">$0.00</label>
+            </div>
+            <div class="form-group col-sm-4" style="height: 50px;">
+              <label class="taxLabel" class="col-sm-4"> &nbsp;&nbsp;Tax: </label>
+              <label id="taxLabel" class="col-sm-8 aggregate-label">$0.00</label>
+            </div>
+            <div class="form-group col-sm-4" style="height: 50px;">
+              <label class="totalAmtLabel" class="col-sm-4"> &nbsp;&nbsp;Total: </label>
+              <label id="totalAmtLabel" class="col-sm-8 aggregate-label">$0.00</label>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3" style="text-align: right;">
+          <button class="btn-cancel btn-success btn3d">RESIDENT CHARGE</button> &nbsp;
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

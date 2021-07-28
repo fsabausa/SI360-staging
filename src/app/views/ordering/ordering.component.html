@@ -1,0 +1,2026 @@
+<div [ngSwitch]="utilityService.screen" [class]="utilityService.setStatus" id="mainDiv" style="background-color:#343B45;">
+    <div *ngSwitchCase="'orderingModule'">
+        <div class="container" id="menuItemsContainer">
+            <div style="width: 100%; height: 100%; padding: 0px; margin: 0px;" cdkDropList [cdkDropListData]="utilityService.dcOrderingTB" (cdkDropListDropped)="onItemDrop($event)" cdkDropListOrientation="vertical">
+
+                <div *ngFor="let parentComp of utilityService.dcOrderingTB" cdkDrag>
+                    <div *ngIf="parentComp.ControlPanel == 'orderbuttoncontrol'" class="row rsoprimaryBackgroundColor" id="TopPanelDiv">
+                    	<div  style="overflow-x: scroll; width: 100%; height: 130px;
+									  display: flex;
+									  flex-direction: row;">
+							<div  *ngFor="let nav of utilityService._navigationEntries">
+		                    	<!-- <div [ngStyle]="_css_navigation_buttons(((1280 / this.buttonSettings[0].ColumnCount) - 1))">
+		                            <input type="button" value="{{nav.Text}}" [class]="_class_nav(nav.Text)" (click)="functionCall(nav.Text);" />
+                                </div> -->
+                                <div [ngStyle]="_css_navigation_buttons(((1280 / this.buttonSettings[0].ColumnCount) - 1))"
+                                *ngIf="!utilityService.fireAllList.includes(utilityService.globalInstance.SelectedSaleId) || nav.Text != 'FIRE ALL';else elseBlock">
+                                    <input type="button" value="{{nav.Text}}" [class]="_class_nav(nav.Text)" (click)="functionCall(nav.Text);" />
+                                </div>
+                                <ng-template #elseBlock>
+                                    <div [ngStyle]="_css_navigation_buttons(((1280 / this.buttonSettings[0].ColumnCount) - 1))" >
+                                        <input type="button" value="{{nav.Text}}" [class]="_class_nav('disable')" disabled="disabled" />
+                                    </div>
+                                </ng-template>
+
+		                    </div>
+	                    </div>
+	                    <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}">
+                            <svg height="30" width="30">
+                                <circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div *ngIf="parentComp.ControlPanel == 'orderdetailcontrol'" class="row">
+                        <div class="col-sm-12" cdkDropList [cdkDropListData]="utilityService.dcOrderingLR" (cdkDropListDropped)="onItemDrop($event)" cdkDropListOrientation="horizontal">
+                            <div class="row">
+                                <div class="{{compChild.AppClass}}" *ngFor="let compChild of utilityService.dcOrderingLR" cdkDrag style="height: 85vh;">
+                                    <div *ngIf="compChild.ControlPanel == 'orderguestcheckdiv'" class="col-sm-12 rsoBackgroundWhite" id="GuestCheckDiv" >
+                                        <div class="row" align="center">
+                                            <div class="col-12">
+                                                <label style="font-size: 20px;">{{utilityService.now | date: 'MM/dd'}} {{utilityService.now | date: 'hh:mm a'}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row" align="center">
+                                            <div class="col-12">
+                                                <label style="font-size: 20px;">Employee: {{utilityService._empName | slice:0:16}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row" align="center">
+                                            <div class="col-12">
+                                                <label style="font-size: 20px;">Order Type: {{utilityService.orderType}}</label>
+                                            </div>
+                                        </div>
+                                        <div class="row" align="center" *ngIf="utilityService.currentUserSecurityLevel == 10">
+                                            <div class="col-12">
+                                                <input style="width: 100%; font-weight: bold; font-size: 16pt;" type="button" value="Reprint Order" (click)="reprintOrder();" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12" style="margin-top: -20px;">
+                                                <div class="row" *ngFor="let meal of utilityService.globalInstance.SelectedTableDetail.GetSaleItems">
+                                                    <div class="col-12">
+                                                        <div class="row" style="    margin-top: 14px;">
+                                                            <div class="col-12 seat allCaps" [ngStyle]="_css_selectedSeatOrderUI_Highlight(meal.SeatNumber)" (click)="getSelectedSeat_OrderUI(meal.SeatNumber,meal.CustomerId, meal.ApplyCoursing, meal.SaleId)" (press)="onPressItemCheck($event)" (pressup)="onPressUpItemCheck($event, meal.CustomerId, meal.SaleId, 0)">
+                                                                [ {{meal.SeatNumber}} ]
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="padding-left: 25px; width:100%;">
+                                                            <div class="col-11 seat_name">
+                                                                {{meal.Description}}
+                                                            </div>
+                                                            <div class="col-1">
+                                                                <div [ngStyle]="_css_enable_green_dot(meal.DescriptionWasPrinted,meal.DescriptionRemotePrns,meal.DescriptionSentToKitchen)"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="padding-left: 25px; width:100%;" *ngIf="meal.Dietarydesc != ''">
+                                                            <div class="col-sm-11 seat_name">
+                                                                <label class="label_guestCheckWindow">{{meal.DietaryDesc}}</label>
+                                                            </div>
+                                                            <div class="col-sm-1">
+                                                                <div [ngStyle]="_css_enable_green_dot(meal.DietaryDescWasPrinted,meal.DietaryDescRemotePrns,meal.DietaryDescSentToKitchen)"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" *ngIf="meal.ApplyCoursing > 0;">
+                                                            <div class="col-12" *ngFor="let menuItem of meal.GetMenuItems" (click)="selectItem(menuItem.ItemIndex,menuItem.WasPrinted,menuItem.ItemID,menuItem.SaleItemId,menuItem.IsDeletable,menuItem.SentToKitchen,menuItem.VoidReason,meal.CustomerId)" id="itemDiv{{menuItem.ItemIndex}}">
+                                                                <div *ngIf="menuItem.CourseItem == null" style="padding-left: 25px;width:100%;">
+                                                                    <div class="row" [ngStyle]="getBorderStyle(menuItem.IsModifier,menuItem.SaleItemId,menuItem.VoidReason, menuItem.SaleDiscount)" id="selectedMenuID-{{menuItem.ItemID}}">
+                                                                        <div class="allCaps col-7">
+                                                                            <div *ngIf="menuItem.IsModifier;else elseBlock">
+                                                                                <label class="label_guestCheckWindow" style="padding-left: 40px; color: red;">{{menuItem.MenuItemName}}</label>
+                                                                            </div>
+                                                                            <ng-template #elseBlock>
+                                                                                <div *ngIf="menuItem.Price == null && !(menuItem.MenuItemName).includes('!***');else notMessage">
+                                                                                    <label class="label_guestCheckWindow" style="padding-left: 40px;">{{menuItem.MenuItemName}}</label>
+                                                                                </div>
+                                                                                <ng-template #notMessage>
+                                                                                    <label class="label_guestCheckWindow">{{menuItem.MenuItemName}}</label>
+                                                                                </ng-template>
+                                                                            </ng-template>
+                                                                        </div>
+                                                                        <div *ngIf="!menuItem.IsModifier" class="col-4" align="right">
+                                                                            <label class="label_Price"><b>{{menuItem.Price}}</b></label>
+                                                                        </div>
+                                                                        <div class="col-1">
+                                                                            <div [ngStyle]="_css_enable_green_dot(menuItem.WasPrinted,menuItem.RemotePrns,menuItem.SentToKitchen)"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div *ngIf="menuItem.SaleDiscount != null" class="row" style="height: 30px;">
+                                                                        <div *ngIf="menuItem.SaleDiscount.IsComp == 0" class="col-12">
+                                                                            <div class="row">
+                                                                                <div class="col-6">
+                                                                                    <label class="label_Price">
+                                                                                        Discount
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="col-6" style="text-align: right;">
+                                                                                    <label class="label_Price">
+                                                                                        {{convertTextToWholeNumber(menuItem.SaleDiscount.Amount)}}
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div *ngIf="menuItem.SaleDiscount.IsComp != 0" class="col-12">
+                                                                            <div class="row">
+                                                                                <div class="col-12">
+                                                                                    <label class="label_Price">Compensation</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" *ngIf="meal.ApplyCoursing > 0;else nonCoursingBlock">
+                                                            <div class="col-sm-12" *ngFor="let item of [].constructor(meal.ApplyCoursing); let i = index" >
+                                                                <div (click)="selectCourseNo(meal.SeatNumber,i+1, meal.CustomerId, meal.SaleId)" (press)="onPressItemCheck($event)" (pressup)="onPressUpItemCheck($event, meal.CustomerId, meal.SaleId, i+1)">
+                                                                    <div [class]="getCourseStatus(meal.SeatNumber, i+1)">Course {{i+1}} <b (click)="hideShowContent(meal.SeatNumber, i+1)" class="coursing_no">{{getCourseCount(meal.SeatNumber,i+1)}}</b></div>
+                                                                </div>
+                                                                <div class="row" id="seat_{{meal.SeatNumber}}_course_{{i+1}}" style="padding-left: 25px;width:100%;">
+                                                                    <div class="col-12" *ngFor="let menuItem of meal.GetMenuItems" (click)="selectItem(menuItem.ItemIndex,menuItem.WasPrinted,menuItem.ItemID,menuItem.SaleItemId,menuItem.IsDeletable,menuItem.SentToKitchen,menuItem.VoidReason,meal.CustomerId)" id="itemDiv{{menuItem.ItemIndex}}">
+                                                                        <div *ngIf="menuItem.CourseItem != null">
+                                                                            <div class="row" *ngIf="menuItem.CourseItem.CourseNo == i+1" [ngStyle]="getBorderStyle(menuItem.IsModifier,menuItem.SaleItemId,menuItem.VoidReason, menuItem.SaleDiscount)" id="selectedMenuID-{{menuItem.ItemID}}">
+                                                                                <div class="allCaps col-7">
+                                                                                    <div *ngIf="menuItem.IsModifier;else elseBlock">
+                                                                                        <label class="label_guestCheckWindow" style="padding-left: 40px; color: red;">{{menuItem.MenuItemName}}</label>
+                                                                                    </div>
+                                                                                    <ng-template #elseBlock>
+                                                                                        <div *ngIf="menuItem.Price == null && !(menuItem.MenuItemName).includes('!***');else notMessage">
+                                                                                            <label class="label_guestCheckWindow" style="padding-left: 40px;">{{menuItem.MenuItemName}}</label>
+                                                                                        </div>
+                                                                                        <ng-template #notMessage>
+                                                                                            <label class="label_guestCheckWindow">{{menuItem.MenuItemName}}</label>
+                                                                                        </ng-template>
+                                                                                    </ng-template>
+                                                                                </div>
+                                                                                <div *ngIf="!menuItem.IsModifier" class="col-4" align="right">
+                                                                                    <label class="label_Price"><b>{{menuItem.Price}}</b></label>
+                                                                                </div>
+                                                                                <div class="col-1">
+                                                                                    <div [ngStyle]="_css_enable_green_dot(menuItem.WasPrinted,menuItem.RemotePrns,menuItem.SentToKitchen)"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div *ngIf="menuItem.SaleDiscount != null && menuItem.CourseItem.CourseNo == i+1" class="row" style="height: 30px;">
+                                                                                <div *ngIf="menuItem.SaleDiscount.IsComp == 0" class="col-12">
+                                                                                    <div class="row">
+                                                                                        <div class="col-6">
+                                                                                            <label class="label_Price">
+                                                                                                Discount
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div class="col-6" style="text-align: right;">
+                                                                                            <label class="label_Price">
+                                                                                                {{convertTextToWholeNumber(menuItem.SaleDiscount.Amount)}}
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div *ngIf="menuItem.SaleDiscount.IsComp != 0" class="col-12">
+                                                                                    <div class="row">
+                                                                                        <div class="col-12">
+                                                                                            <label class="label_Price">Compensation</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <ng-template #nonCoursingBlock>
+                                                            <div class="row" style="padding-left: 25px; width:100%;">
+                                                                <div class="col-12" *ngFor="let menuItem of meal.GetMenuItems" (click)="selectItem(menuItem.ItemIndex,menuItem.WasPrinted,menuItem.ItemID,menuItem.SaleItemId,menuItem.IsDeletable,menuItem.SentToKitchen,menuItem.VoidReason,meal.CustomerId)" id="itemDiv{{menuItem.ItemIndex}}">
+                                                                    <div class="row" [ngStyle]="getBorderStyle(menuItem.IsModifier,menuItem.SaleItemId,menuItem.VoidReason, menuItem.SaleDiscount)" id="selectedMenuID-{{menuItem.ItemID}}">
+                                                                        <div class="allCaps col-7">
+                                                                            <div *ngIf="menuItem.IsModifier;else elseBlock">
+                                                                                <label class="label_guestCheckWindow" style="padding-left: 10px; color: red;">{{menuItem.MenuItemName}}</label>
+                                                                            </div>
+                                                                            <ng-template #elseBlock>
+                                                                                <div *ngIf="menuItem.Price == null && !(menuItem.MenuItemName).includes('!***');else notMessage">
+                                                                                    <label class="label_guestCheckWindow" style="padding-left: 40px;">{{menuItem.MenuItemName}}</label>
+                                                                                </div>
+                                                                                <ng-template #notMessage>
+                                                                                    <label class="label_guestCheckWindow">{{menuItem.MenuItemName}}</label>
+                                                                                </ng-template>
+                                                                            </ng-template>
+                                                                        </div>
+                                                                        <div class="col-4" align="right">
+                                                                            <label class="label_Price"><b>{{menuItem.Price}}</b></label>
+                                                                        </div>
+                                                                        <div class="col-1">
+                                                                            <div [ngStyle]="_css_enable_green_dot(menuItem.WasPrinted,menuItem.RemotePrns,menuItem.SentToKitchen)"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div *ngIf="menuItem.SaleDiscount != null" class="row" style="height: 30px;">
+                                                                        <div *ngIf="menuItem.SaleDiscount.IsComp == 0" class="col-12">
+                                                                            <div class="row">
+                                                                                <div class="col-6">
+                                                                                    <label class="label_Price">
+                                                                                        Discount
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="col-6" style="text-align: right;">
+                                                                                    <label class="label_Price">
+                                                                                        {{convertTextToWholeNumber(menuItem.SaleDiscount.Amount)}}
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div *ngIf="menuItem.SaleDiscount.IsComp != 0" class="col-12">
+                                                                            <div class="row">
+                                                                                <div class="col-12">
+                                                                                    <label class="label_Price">Compensation</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </ng-template>
+                                                    </div>
+                                                </div>
+                                                <div class="row" align="center" *ngIf="utilityService.currentUserSecurityLevel == 10">
+                                                    <div class="col-12">
+                                                        <input style="width: 100%; font-weight: bold; font-size: 16pt;" type="button" value="Reprint Order" (click)="reprintOrder();" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}">
+                                        <svg height="30" width="30">
+                                            <circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" />
+                                        </svg>
+                                    </div>
+                                    <div *ngIf="returnTotalOrderedMeal() >= 8" class="rotate-vert-center">
+                                        <img width="40" height="40" alt="" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiBoZWlnaHQ9IjMycHgiIGlkPSLQodC70L7QuV8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0yNC4yODUsMTEuMjg0TDE2LDE5LjU3MWwtOC4yODUtOC4yODhjLTAuMzk1LTAuMzk1LTEuMDM0LTAuMzk1LTEuNDI5LDAgIGMtMC4zOTQsMC4zOTUtMC4zOTQsMS4wMzUsMCwxLjQzbDguOTk5LDkuMDAybDAsMGwwLDBjMC4zOTQsMC4zOTUsMS4wMzQsMC4zOTUsMS40MjgsMGw4Ljk5OS05LjAwMiAgYzAuMzk0LTAuMzk1LDAuMzk0LTEuMDM2LDAtMS40MzFDMjUuMzE5LDEwLjg4OSwyNC42NzksMTAuODg5LDI0LjI4NSwxMS4yODR6IiBmaWxsPSIjMTIxMzEzIiBpZD0iRXhwYW5kX01vcmUiLz48Zy8+PGcvPjxnLz48Zy8+PGcvPjxnLz48L3N2Zz4=" />
+                                    </div>
+                                    <div *ngIf="compChild.ControlPanel == 'ordertablediv'" class="col-sm-12" style="padding: 0px;margin: 0px;">
+                                        <div class="row" id="SpeedBarDiv" style="background-color: #E6E7E7;">
+                                            <table class="table table-bordered" align="center">
+                                                <tr *ngFor="let o of utilityService.openChecks | orderBy:CheckNumber" style="border-bottom-style: groove;">
+                                                    <td (click)="getCheckDetails(o.SaleId,o.TableName,o.LayoutTableId,o.CheckNumber);" [ngStyle]="_css_Selected_table_speedBar(o.TableName,o.SaleId,o.LayoutTableId,o.CheckNumber)">
+                                                        <div class="row">
+                                                            <div class="col-sm-7">
+                                                                <div class="row">
+                                                                    <div class="col-sm-1"></div>
+                                                                    <div class="col-sm-9" style="border-style: solid;
+																					height: 90%; width: 90%; 
+																					text-align: center; font-size: 40px;
+																					white-space: normal; background-color: black;">
+                                                                        <label><b>{{o.TableName}}</b></label>
+                                                                    </div>
+                                                                    <div *ngIf="o.SyncStatus == false" class="col-sm-2" style="height: 25px;
+																					  width: 50px;
+																					  background-color: red;
+																					  border-radius: 50%;
+																					  display: inline-block;
+																					  text-align: center;
+																					  margin-left: -10px;
+																					  margin-top: 25px;">
+                                                                        <b style="color:#fff;">!</b>
+                                                                    </div>
+                                                                    <!-- <div *ngIf="o.SyncStatus == false && utilityService.syncProccessing == true" class="col-sm-2" style="height: 25px;
+																					  width: 50px;
+																					  display: inline-block;
+																					  text-align: center;
+																					  margin-left: -10px;
+																					  margin-top: 25px;">
+                                                                        <img style="height: 25px; width: 25px; margin-left: -10px;" src="assets/img/loading.gif" />
+                                                                    </div> -->
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-5 speedBarFontSize" style="    text-align: center;">
+                                                                <Label style="margin-top: 10%;" class="allCaps"><b>{{o.CheckDescription}} </b></Label>
+                                                                <br />
+                                                                <label id="getVal{{o.TableName}}"><b>{{o.CheckNumber}}</b></label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        <!--     <div *ngIf="returnTotalOpenChecks() > 4" class="rotate-vert-center" style="bottom: 40%">
+                                                <img width="40" height="40" alt="" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiBoZWlnaHQ9IjMycHgiIGlkPSLQodC70L7QuV8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0yNC4yODUsMTEuMjg0TDE2LDE5LjU3MWwtOC4yODUtOC4yODhjLTAuMzk1LTAuMzk1LTEuMDM0LTAuMzk1LTEuNDI5LDAgIGMtMC4zOTQsMC4zOTUtMC4zOTQsMS4wMzUsMCwxLjQzbDguOTk5LDkuMDAybDAsMGwwLDBjMC4zOTQsMC4zOTUsMS4wMzQsMC4zOTUsMS40MjgsMGw4Ljk5OS05LjAwMiAgYzAuMzk0LTAuMzk1LDAuMzk0LTEuMDM2LDAtMS40MzFDMjUuMzE5LDEwLjg4OSwyNC42NzksMTAuODg5LDI0LjI4NSwxMS4yODR6IiBmaWxsPSIjMTIxMzEzIiBpZD0iRXhwYW5kX01vcmUiLz48Zy8+PGcvPjxnLz48Zy8+PGcvPjxnLz48L3N2Zz4=" />
+                                            </div> -->
+                                        </div>
+                                        <div class="row" id="OrderSummaryDiv" style="background-color: #E6E7E7;">
+                                            <table style="width: 100%;">
+                                                <tr style="background-color: #3074BA;color:white;border-bottom-style: groove;">
+                                                    <td colspan="2">
+                                                        <label style="margin-top: 7px;" class="label_order_summary"><b>ORDER SUMMARY</b></label>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom-style: groove;">
+                                                    <td>
+                                                        <label class="label_order_summary"><b>SUBTOTAL:</b></label>
+                                                    </td>
+                                                    <td style="float: right">
+                                                        <label class="label_order_summary"><b>{{utilityService.subTotal}}</b></label>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom-style: groove;">
+                                                    <td>
+                                                        <label class="label_order_summary"><b>DISCOUNT:</b></label>
+                                                    </td>
+                                                    <td style="float: right">
+                                                        <label class="label_order_summary"><b>{{utilityService.discounttotal}}</b></label>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom-style: groove;">
+                                                    <td>
+                                                        <label class="label_order_summary"><b>TAX TOTAL:</b></label>
+                                                    </td>
+                                                    <td style="float: right">
+                                                        <label class="label_order_summary"><b>{{utilityService.totalTax}}</b></label>
+                                                    </td>
+                                                </tr>
+                                                <tr style="border-bottom-style: groove;">
+                                                    <td>
+                                                        <label class="label_order_summary"><b>GRAND TOTAL:</b></label>
+                                                    </td>
+                                                    <td style="float: right">
+                                                        <label class="label_order_summary"><b>{{utilityService.grandtotal}}</b></label>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}">
+                                            <svg height="30" width="30">
+                                                <circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="compChild.ControlPanel == 'ordermenuitemdiv'" class="row" id="MenuItemsBodyDiv" style="padding: 0px;margin: 0px;">
+                                 
+                                        <div class="col-sm-12 ">
+                                               <div class="row rsoBackgroundColorBody" id="MenuListDivRow" [ngStyle]="_css_menu_buttons()">
+                                                    <div class="col-sm-{{ 12 / buttonSettings[1].ColumnCount }}" *ngFor="let button of utilityService._buttons" id="" style="padding: 0px 1px;">
+                                                            <input *ngIf='button.ButtonText != ""' class="btn-menu-item-large btn-primary-noshadow btn3d-menu-item. borderRadius5 allCaps" [ngStyle]="_menu_status(button.ButtonText)" type="button" value="{{button.ButtonText}}" (click)="selectedButton(button.ButtonText,button.Function)"/>                                                  
+                                                    </div>
+                                                </div>                                       
+                                        </div>
+                                       <!--  <div class="col-sm-2">
+                                            <div class="row rsoBackgroundColorBody" id="MenuListDivRow" [ngStyle]="_css_menu_buttons()">
+                                                <input  class="btn-menu-item-large btn-primary-noshadow btn3d-menu-item. borderRadius5 allCaps" [ngStyle]="_menu_status('USER FUNCTION')" type="button" value="USER FUNCTION" />    
+                                                <input  class="btn-menu-item-large btn-primary-noshadow btn3d-menu-item. borderRadius5 allCaps" [ngStyle]="_menu_status('MANAGER')" type="button" value="MANAGER"/> 
+                                            </div>                                      
+                                        
+                                    </div> -->
+                                        <div class="col-sm-12 rsoprimaryBackgroundColor" id="MenuItemsDivRow" [ngStyle]="_css_menu_item_buttons()">
+                                            <div class="row" *ngFor="let subButton of utilityService.subButton">
+                                                <div *ngFor="let subButtonView of subButton.Buttons" [class]="_class_menu_item(subButtonView.SubButtonID)" id="{{subButtonView.SubButtonID}}" itemwidth="col-sm-2"  style="padding: 0px 1px;background-color: #000431;width: 725px;">
+                                                   <!--  <input id="btn-{{subButtonView.SubButtonID}}" type="button" value="{{subButtonView.ButtonText}}" class="btn-menu-item-large  pinch-elem btn3d-menu-item borderRadius5 allCaps hover-effect" id="btn-{{subButtonView.SubButtonID}}" #menuItem [ngStyle]="_menuItem_status(subButtonView.ButtonText,null,subButtonView.Top,subButtonView.Bottom,subButtonView.FontColor,subButtonView.SubButtonID)" (panstart)="onPanStart(subButtonView, $event)" (panmove)="onPan(subButtonView, $event)" (panend)="onPanEnd(subButtonView, $event)" (press)="onPress($event)" (pressup)="onPressUp($event)" (click)="getItemName(subButtonView.ButtonText,subButtonView.SubButtonID,subButtonView.ItemPrice,subButtonView.FunctionIndex,subButtonView.ItemCount,subButtonView.MinSecLevel,subButtonView.AskForSupervisor)"> -->
+
+                                                    <input *ngIf='subButtonView.ButtonText != "No Sale";else displayNosale' id="btn-{{subButtonView.SubButtonID}}" type="button" value="{{subButtonView.ButtonText}}" class="btn-menu-item-large  pinch-elem btn3d-menu-item borderRadius5 allCaps hover-effect responsive-width" id="btn-{{subButtonView.SubButtonID}}" #menuItem [ngStyle]="_menuItem_status(subButtonView.ButtonText,null,subButtonView.Top,subButtonView.Bottom,subButtonView.FontColor,subButtonView.SubButtonID)" (panstart)="onPanStart(subButtonView, $event)" (panmove)="onPan(subButtonView, $event)" (panend)="onPanEnd(subButtonView, $event)" (press)="onPress($event)" (pressup)="onPressUp($event)" (click)="getItemName(subButtonView.ButtonText,subButtonView.SubButtonID,subButtonView.ItemPrice,subButtonView.FunctionIndex,subButtonView.ItemCount,subButtonView.MinSecLevel,subButtonView.AskForSupervisor)">
+                                                    <label *ngIf="subButtonView.ItemCount >= 0 && subButtonView.FunctionIndex == -1"  id="label-{{subButtonView.SubButtonID}}" style="top:5px; left:15px; position:absolute; color:red;">{{subButtonView.ItemCount}}</label>                                                 
+                                                    <ng-template #displayNosale>
+
+                                                        <input  *ngIf='utilityService.globalInstance.CurrentUser.SecurityLevel == 10 || utilityService.globalInstance.CurrentUser.SecurityLevel == 99' id="btn-{{subButtonView.SubButtonID}}" type="button" value="{{subButtonView.ButtonText}}" class="btn-menu-item-large  pinch-elem btn3d-menu-item borderRadius5 allCaps hover-effect responsive-width" id="btn-{{subButtonView.SubButtonID}}" #menuItem [ngStyle]="_menuItem_status(subButtonView.ButtonText,null,subButtonView.Top,subButtonView.Bottom,subButtonView.FontColor,subButtonView.SubButtonID)" (panstart)="onPanStart(subButtonView, $event)" (panmove)="onPan(subButtonView, $event)" (panend)="onPanEnd(subButtonView, $event)" (press)="onPress($event)" (pressup)="onPressUp($event)" onclick="buildMessage();">
+                                                    <label *ngIf="subButtonView.ItemCount >= 0 && subButtonView.FunctionIndex == -1"  id="label-{{subButtonView.SubButtonID}}" style="top:5px; left:15px; position:absolute; color:red;">{{subButtonView.ItemCount}}</label>
+                                                    </ng-template>
+                                                
+                                                </div> 
+                                            </div>
+                                        </div>
+                                        <div *ngIf="utilityService._totalItemCount > 3 || utilityService._totalItemCount > 18" class="rotate-vert-center">
+                                            <img width="40" height="40" alt="" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiBoZWlnaHQ9IjMycHgiIGlkPSLQodC70L7QuV8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0yNC4yODUsMTEuMjg0TDE2LDE5LjU3MWwtOC4yODUtOC4yODhjLTAuMzk1LTAuMzk1LTEuMDM0LTAuMzk1LTEuNDI5LDAgIGMtMC4zOTQsMC4zOTUtMC4zOTQsMS4wMzUsMCwxLjQzbDguOTk5LDkuMDAybDAsMGwwLDBjMC4zOTQsMC4zOTUsMS4wMzQsMC4zOTUsMS40MjgsMGw4Ljk5OS05LjAwMiAgYzAuMzk0LTAuMzk1LDAuMzk0LTEuMDM2LDAtMS40MzFDMjUuMzE5LDEwLjg4OSwyNC42NzksMTAuODg5LDI0LjI4NSwxMS4yODR6IiBmaWxsPSIjMTIxMzEzIiBpZD0iRXhwYW5kX01vcmUiLz48Zy8+PGcvPjxnLz48Zy8+PGcvPjxnLz48L3N2Zz4=" />
+                                        </div>
+                                        <div *ngIf="zoomButtons" class="shake-bottom plus-button" (click)=largerButton()>
+                                            <span style="display: inline-block;"> + </span>
+                                        </div>
+                                        <div *ngIf="zoomButtons" class="shake-bottom minus-button" (click)="smallerButton()">
+                                            <span style="display: inline-block;"> - </span>
+                                        </div>
+                                        <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}">
+                                            <svg height="30" width="30">
+                                                <circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div cdkDragHandle class="small-handler"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngSwitchCase="'multiColumnModifier'">
+        <div class="container">
+            <div class="row" style="background-color: white;">
+                <div class="col-sm-12" style="font-size: 21px;
+	        color: black;
+	        font-weight: bold;">
+                    <label>Select Modifier</label>
+                </div>
+            </div>
+            <div class="row" *ngFor="let i of utilityService._menuItemObject.Items">
+                <div *ngIf="utilityService._menuItemObject.IsButtonType;else elseBlock" style="background-color:white;height: 65vh;font-size: 22px;border: 3px solid; overflow-y: scroll;">
+                    <div class="row" *ngFor="let m of i.ItemModifiers | orderBy: utilityService.ModifierIndex">
+                        <div class="container">
+                            <div style="border-style: groove;background-color: white;">
+                                <div id="{{m.Item.ItemDescription}}" (click)="buttonTypeSelectedMod(m.Item.ItemID,m.Item.ItemDescription,i.ModifierMaxSelect,i.ModifierMinSelect,i.UseModifierMaxSelect,i.UseModifierMinSelect,m.Item.ModifierDescription,m.ModifierIndex,m.Item.ModifierDescription)">
+                                    <label style="font-size: 27px;width: 200px;text-align: center;">{{m.Item.ItemDescription}}</label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ng-template #elseBlock>
+                    <div class="col" style="background-color:white;" *ngFor="let m of i.ItemModifiers | orderBy: utilityService.ModifierIndex">
+                        <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 530px;" >
+                            <table class="table table-bordered">
+                               <thead class="thead-dark" >
+                                   <tr>
+                                      <th scope="col" style="padding: 12px;">
+                                                <label style="font-size:18px;"><b>{{m.Item.ModifierDescription}}</b></label>
+                                        </th>
+                                   </tr>
+                               </thead>
+                                <tbody >
+                                    <div *ngFor="let i2 of m.Item.ItemModifiers | orderBy: utilityService.ModifierIndex">
+                                    <tr  *ngIf="i2.Item" id="{{i2.Item.ItemID}}">
+                                       <td style="font-size: 20px;border:hidden" (click)="selectedMod(i2.Item.ItemID,i2.Item.ItemDescription,m.Item.ModifierMaxSelect,m.Item.ModifierMinSelect,m.Item.UseModifierMaxSelect,m.Item.UseModifierMinSelect,i2.ItemID,m.Item.ModifierDescription,m.ModifierIndex,m.Item.ModifierDescription,i2.Item.ItemModifiers)">
+                                        <label id="{{i2.Item.ItemDescription}}label">{{i2.Item.ItemDescription}}</label>
+                                       </td>
+                                   </tr>
+                                   </div>
+                                </tbody>
+                            </table>
+                          </div>
+
+                 <!--        <div class="row">
+                            <div class="col-sm-12" style="background-color:#6B6E70;color: white;font-size: 22px;">
+                                <table style="width: 100%;height: 100%;">
+                                    <tr>
+                                        <td>
+                                            <div>
+                                                    <label>{{m.Item.ModifierDescription}}</label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-sm-12" style="background-color:white;height: 65vh;font-size: 22px;border: 3px solid; overflow-y: scroll;">
+                                <table>
+                                    <div *ngFor="let i2 of m.Item.ItemModifiers | orderBy: utilityService.ModifierIndex">
+                                        <tr *ngIf="i2.Item" id="{{i2.Item.ItemID}}">
+                                            <td (click)="selectedMod(i2.Item.ItemID,i2.Item.ItemDescription,m.Item.ModifierMaxSelect,m.Item.ModifierMinSelect,m.Item.UseModifierMaxSelect,m.Item.UseModifierMinSelect,i2.ItemID,m.Item.ModifierDescription,m.ModifierIndex,m.Item.ModifierDescription,i2.Item.ItemModifiers)">
+                                                <div>
+                                                    <label id="{{i2.Item.ItemID}}label">{{i2.Item.ItemDescription}}</label>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                </table>
+                            </div>
+                        </div> -->
+                        <div class="row" style="     background-color: #343B45;">
+                            <label style="color: white;
+	                   height: 22px;
+	                    font-size: 16px;
+	                    margin-left: 8px;">{{m.Item.Text}}</label>
+                        </div>
+                    </div>
+                </ng-template>
+             
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                        <input type="button" value="OK" (click)="saveAddedModifiers();" class="btn-rectangle2 btn-success btn3d font-weight-bold" style="width: 100%; height: 80%;">
+                </div>
+                <div class="col-sm-6">
+                    <input type="button" value="CANCEL" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" (click)="getbuttonActionRSO('ADD ORDER')" onClick="this.disabled=true;" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngSwitchCase="'itemmodv4'">
+        <div class="row" *ngFor="let i of utilityService.itemModv4">
+            <div style="background-color:white;height: 65vh;font-size: 27px;border: 3px solid; overflow-y: scroll;">
+                <div class="row" *ngFor="let m of i.Item">
+                    <div class="container">
+                        <div style="border-style: groove;background-color: white;">
+                            <div id="{{m.Item.ItemDescription}}" (click)="buttonTypeSelectedMod(m.Item.ItemID,m.Item.ItemDescription,i.ModifierMaxSelect,i.ModifierMinSelect,i.UseModifierMaxSelect,i.UseModifierMinSelect,m.Item.ModifierDescription,m.ModifierIndex,m.Item.ModifierDescription)">
+                                <label style="font-size: 27px;width: 200px;text-align: center;">{{m.ItemDescription}}</label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <div class="row">
+                        <input type="button" value="OK" (click)="saveAddedModifiers();" class="btn-pat btn-green btn3d" style="width: 200px;">
+                        <input type="button" value="CANCEL" class="btn-pat btn-white btn3d" style="width: 200px;" (click)="getbuttonActionRSO('ADD ORDER')" onClick="this.disabled=true;" />
+                    </div>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+        </div>
+    </div>
+    <div *ngSwitchCase="'itemModifier'">
+        <div class="container">
+            <div class="row" style="background-color: #021CA3;">
+                <div class="col-sm-12" style="font-size: 30px;
+		        color: white;
+		        font-weight: bold;">
+                    <label>Select Modifier</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-{{getSpecialModifiersClassName()}}" *ngFor="let i of utilityService.saleItemModifiers">
+                    <div style="border-style: groove;background-color: white;">
+                        <div>
+                            <label style="font-size: 27px;width: 100%;text-align: center;">{{ i.ModifierDescription }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-{{getSpecialModifiersClassName()}}" *ngFor="let i of utilityService.saleItemModifiers">
+                    <div class="col-sm-12" style="background-color:white;height: 65vh;font-size: 27px;border: 3px solid; overflow-y: scroll;">
+                        <table style="width: 100%;">
+                           <tr style="width: 100%;" *ngFor="let mod of i.ItemModifiers | orderBy : 'ModifierIndex'" id="{{mod.ItemID}}" class="special-modifiers {{checkItemModifier(mod.ItemModifierID)}}" (click)="saveSelectedModifier(i.ItemName, mod.ItemModifierID,i.ModifierMaxSelect,i.ModifierMinSelect,i.UseModifierMaxSelect,i.UseModifierMinSelect)">
+                                <td>
+                                    <div *ngIf="mod.ModifierName">
+                                        <label>{{ filterString(mod.ModifierName) }}</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div><label style="color: #fff;">{{i.Text}}</label></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <div class="row">
+                        <input type="button" value="OK" (click)="saveSaleItemModifier()" class="btn-pat btn-green btn3d" style="width: 200px;">
+                        <input type="button" value="CANCEL" class="btn-pat btn-white btn3d" style="width: 200px;" (click)="getbuttonActionRSO('ADD ORDER')" onClick="this.disabled=true;" />
+                    </div>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+<div bsModal #openReasonModal="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>Reason</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 70px;">
+    <select style="width:100%; font-size:26px;" [(ngModel)]="reasonId">
+        <option selected="true">Not Specified</option>
+        <option *ngFor="let reason of utilityService.voidReasonList" value="{{reason.ReasonIndex}}">{{reason.ReasonName}}</option>
+    </select>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+        value="Void" (click)="voidItem();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="CANCEL" (click)="closeReasonModal();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+
+<div bsModal #openChecksModal="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-6"><h1 id="dialog-child-name" class="modal-title pull-left"><b>TAP TO COMBINE</b></h1></div>
+     <div class="col-6"><h1 style="color: #021CA3;"><b>{{utilityService.selectedItemOnCombineCheckMsg}}</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 415px;">
+     <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+               <th scope="col"><label style="font-size:20px;"><b>#</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>DATE TIME</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>DESCRIPTION</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>EMP NAME/ID</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>TABLE</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>AMOUNT</b></label></th>
+            </tr>
+        </thead>
+         <tbody >
+            <tr *ngFor="let check of utilityService.openChecks" (click)="selectedItemOnCombineCheck(check.SaleId,check.CheckNumber,check.TakenSeats,check.SeatCount);" id="CombineCheckID-{{check.SaleId}}" >
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.CheckNumber}}</b></label>
+                </td>
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.StartDate}}</b></label>
+                </td>
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.CheckDescription}}</b></label>
+                </td>
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.EmployeeName}}</b></label>
+                </td>
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.TableName}}</b></label>
+                </td>
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.Amount}}</b></label>
+                </td>
+            </tr>
+         </tbody>
+     </table>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 100%;    height: 80%;" 
+        value="COMBINE" (click)="combineChecks();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%;    height: 80%;" 
+                      value="CANCEL" (click)="closeOpenCheckModal();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #openClosedChecksModal="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-6"><h1 id="dialog-child-name" class="modal-title pull-left"><b>SELECT CLOSED CHECKS</b></h1></div>
+     <div class="col-6"><h1 style="color: #021CA3;"><b>{{utilityService.selectedItemOnClosedCheckMsg}}</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height:415px;">
+     <table class="table table-bordered" style="">
+        <thead class="thead-dark">
+            <tr>
+               <th scope="col"><label style="font-size:20px;"><b>#</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>DATE TIME</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>DESCRIPTION</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>EMP NAME/ID</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>TABLE</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>AMOUNT</b></label></th>
+            </tr>
+        </thead>
+         <tbody >
+            <tr *ngFor="let check of utilityService.closedChecks" (click)="selectedItemOnClosedCheck(check.SaleId,check.CheckNumber,check.IsCreditCardTransaction);" id="ClosedCheckID-{{check.SaleId}}">
+                <td >
+                    <label style="font-size:20px;"><b>{{check.CheckNumber}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.StartDate}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.CheckDescription}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.EmployeeName}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.TableName}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.Amount}}</b></label>
+                </td>
+            </tr>
+         </tbody>
+     </table>
+   </div>
+ </div>
+ <div class="modal-footer" >
+        <div class="col-6">
+            <input *ngIf="!utilityService.isCreditCardTrans" type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+            value="REOPEN CHECK" (click)="reOpenClosedCheck();"/>
+            <input *ngIf="utilityService.isCreditCardTrans" type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+            value="VOID" (click)="voidCreditCard();" />
+         </div>       
+         <div class="col-6">
+            <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+                          value="CANCEL" (click)="closeClosedChecks();" />
+         </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #viewAnyCheck="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-6"><h1 id="dialog-child-name" class="modal-title pull-left"><b>SELECT CHECK</b></h1></div>
+     <div class="col-6"><h1 style="color: #021CA3;"><b>{{utilityService.selectedItemOnCombineCheckMsg}}</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 415px;">
+     <table class="table table-bordered" style="">
+        <thead class="thead-dark">
+            <tr>
+               <th scope="col"><label style="font-size:20px;"><b>#</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>DATE TIME</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>DESCRIPTION</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>EMP NAME/ID</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>TABLE</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>AMOUNT</b></label></th>
+            </tr>
+        </thead>
+         <tbody >
+            <tr *ngFor="let check of utilityService.openChecks" id='selectedCheckToView-{{check.SaleId}}' (click)="selectedCheckToView(check.SaleId,check.TableName,check.SaleId);" >
+                <td>
+                    <label style="font-size:20px;"><b>{{check.CheckNumber}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.StartDate}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.CheckDescription}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.EmployeeName}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.TableName}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.Amount}}</b></label>
+                </td>
+            </tr>
+         </tbody>
+     </table>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+        value="OK" (click)="selectedCheckToViewOK();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+                      value="CANCEL" (click)="closeViewAnyCheck(true);" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #openChecksModalMoveItem="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-6"><h1 id="dialog-child-name" class="modal-title pull-left"><b>SELECT CHECK</b></h1></div>
+     <div class="col-6"><h1 style="color: #021CA3;"><b>{{utilityService.selectedItemOnMoveItemMsg}}</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 415px;">
+     <table class="table table-bordered" style="">
+        <thead class="thead-dark">
+            <tr>
+               <th scope="col"><label style="font-size:20px;"><b>#</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>DATE TIME</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>DESCRIPTION</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>EMP NAME/ID</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>TABLE</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>AMOUNT</b></label></th>
+            </tr>
+        </thead>
+         <tbody >
+            <tr *ngFor="let check of utilityService.openChecks" (click)="setSaleIdForTransfer(check.SaleId,check.CheckNumber);" id="MoveItemCheckID-{{check.SaleId}}">
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.CheckNumber}}</b></label>
+                </td>
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.StartDate}}</b></label>
+                </td>
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.CheckDescription}}</b></label>
+                </td >
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.EmployeeNumber}}</b></label>
+                </td>
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.TableName}}</b></label>
+                </td>
+                <td *ngIf="check.SaleId != utilityService.selectedSaleID">
+                    <label style="font-size:20px;"><b>{{check.Amount}}</b></label>
+                </td>
+            </tr>
+         </tbody>
+     </table>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+        value="Move Items" (click)="transferItemsToOtherCheck();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+                      value="CANCEL" (click)="closeOpenCheckModelMoveItem();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+
+<div bsModal #settleMultipleCheck="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+     <div class="col-sm-1">
+        <input type="checkbox" id="defaultCheck" name="example2" [(ngModel)]="isChecked"  (click)="selectAll(isChecked);" style="width: 50px;height:70px;position: absolute;
+        top: -10px;">
+     </div>
+        <div class="col-sm-5">
+            <h1 style="float: left;"><b>SELECT ALL</b></h1>
+        </div>
+     <div class="col-sm-6"><h1 style="color: #021CA3;"><b>{{utilityService.selectedMultipleCheckTotalAmount}}</b></h1></div>  
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 415px;">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+               <th scope="col"><label style="font-size:20px;"><b>#</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>DATE TIME</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>DESCRIPTION</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>EMP NAME/ID</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>TABLE</b></label></th>
+               <th scope="col"><label style="font-size:20px;"><b>AMOUNT</b></label></th>
+            </tr>
+        </thead>
+         <tbody >
+            <tr *ngFor="let check of utilityService.openChecks" (click)="selectedMultipleCheck(check.SaleId,check.Amount);" id="MultipleCheck-{{check.SaleId}}" >
+                <td>
+                    <label style="font-size:20px;"><b>{{check.CheckNumber}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.StartDate}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.CheckDescription}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.EmployeeName}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.TableName}}</b></label>
+                </td>
+                <td>
+                    <label style="font-size:20px;"><b>{{check.Amount}}</b></label>
+                </td>
+            </tr>
+         </tbody>
+     </table>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+        value="SETTLE MULTIPLE" (click)="openMediaTypeListModal();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+                      value="CANCEL" (click)="closeSettleMultipleCheckModal();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #mediaTypeList="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1><b>SELECT MEDIA TYPE</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 500px;">
+    <div class="col-sm-6" *ngFor="let media of utilityService._media" style="float:left;text-transform: uppercase;">
+        <input  type="button" class="btn-room btn-primary btn3d font-weight-bold" value={{media.MediaName}}  style="text-transform: uppercase;" (click)="openConfirmationPrintReceipt(media.MediaIndex);">
+    </div>
+    <div class="col-sm-6" style="float:left;">
+        <input type="button" value="CANCEL" class="btn-room btn-danger btn3d font-weight-bold allCaps" (click)="closeMediaTypeListModal();">
+    </div>
+   </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #confirmationPrintReceipt="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="left" style="background-color: midnightblue;color: white;;">
+    <div class="col-sm-12"><h3><b>CONFIRMATION</b></h3></div>
+ </div>
+ <div class="modal-body">
+         <br/><br/><br/><br/><br/>
+        <h1 style="font-size: 80px;">Do you want to print a receipt?</h1>
+        <br/>
+        <div class="row">
+            <div class="col-sm-6">
+                <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+                value="PRINT 1 ENTIRE CHECK" (click)="payMultipleCheck('1 ENTIRE CHECK');"/>
+             </div>
+             <div class="col-sm-6">
+                <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+                value="INDIVIDUAL CHECK" (click)="payMultipleCheck('INDIVIDUAL CHECK');"/>
+             </div>
+        </div>
+</div>
+    <div class="modal-footer">
+            <div class="col-sm-6">
+                <input type="button" class="btn-rectangle2 btn-info btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+                              value="NO" (click)="payMultipleCheck('NO');"/>
+             </div>
+             <div class="col-sm-6">
+                <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+                              value="CANCEL" (click)="hideConfirmationPrintReceipt();" />
+             </div>
+     </div>
+ </div>
+
+</div>
+</div>
+
+<div bsModal #openEmployeeList="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-6"><h1 id="dialog-child-name" class="modal-title pull-left"><b>SELECT EMPLOYEE</b></h1></div>
+     <div class="col-6"><h1 style="color: #021CA3;"><b>{{utilityService.selectedEmployeeListMsg}}</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 350px;">
+     <table class="table table-striped" style="">
+        <thead class="thead-dark">
+            <tr>
+               <th scope="col" style="width: 300px;"><h2><b>ID</b></h2></th>
+               <th scope="col" width="*"><h2><b>EMPLOYEE NAME</b></h2></th>
+            </tr>
+        </thead>
+         <tbody >
+            <tr *ngFor="let emp of utilityService.employeeList" (click)="setSelectedEmployeeList(emp.EmpNumber, emp.FirstName+' '+emp.LastName);" id="EmployeeListID-{{emp.EmpNumber}}" style="font-size: 18px;" >
+                <td *ngIf="emp.EmpNumber != utilityService.globalInstance.CurrentUser.EmpID">
+                    <h2><b>{{emp.EmpNumber}}</b></h2>
+                </td>
+                <td *ngIf="emp.EmpNumber != utilityService.globalInstance.CurrentUser.EmpID">
+                    <h2><b>{{emp.FirstName}} {{emp.LastName}}</b></h2>
+                </td>
+            </tr>
+         </tbody>
+     </table>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 100%;    height: 80%;" 
+        value="Transfer Check" (click)="setTransferTable();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%;    height: 80%;" 
+                      value="CANCEL" (click)="closeOpenEmployeeListModal();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #openReasonCompModal="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>Reason</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 70px;">
+    <select style="width:100%; font-size:26px;" [(ngModel)]="reasonCompId">
+        <option *ngFor="let reason of utilityService.compReasonList; let i = index" 
+        value="{{reason.ReasonIndex}}"
+        [attr.selected]="i == 0 ? true : null">{{reason.ReasonName}}</option>
+<!--         <option *ngFor="let reason of utilityService.compReasonList" value="{{reason.ReasonIndex}}">{{reason.ReasonName}}</option> -->
+    </select>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 95%; height: 80%;" 
+        value="SAVE" (click)="saveCompensation();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 95%; height: 80%;" 
+                      value="CANCEL" (click)="closeReasonCompModal();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+
+<div bsModal #openResetModal="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>Reset to Unlimited Quantity</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+    <div class="col-12"><h2>Do you want to reset all items to unlimited quantity? or a single item only?</h2></div>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-4">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+        value="ALL ITEMS" (click)="openResetAllModel();"/>
+     </div>
+     <div class="col-4">
+        <input type="button" class="btn-rectangle2 btn-orange btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="1 ITEM ONLY" (click)="resetOne();" />
+     </div>
+     <div class="col-4">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="CANCEL" (click)="closeResetModal();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+
+<div bsModal #openResetAllModal="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>Reset to Unlimited Quantity</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+    <div class="col-12"><h2>Are you sure you want to reset all items to unlimited Quantity?</h2></div>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+        value="YES" (click)="resetAll();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="NO" (click)="closeResetAllModal();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #diaglogCancelSale="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>Cancel Sale</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+    <div class="col-12"><h2 style="text-align: center;
+        vertical-align: middle;
+        line-height: 7;
+        font-size: 45px;">Are you sure you want to cancel this sale {{utilityService.globalInstance.SelectedCheckNumber }} ?</h2></div>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+        value="YES" (click)="executeCancelSale();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="NO" (click)="hideDialogCancelSale();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #dialogNumericKeyPad4="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-body">
+     <div class="row">
+        <div class="col-sm-8">
+            <div style="    background-color: white;
+            height: 80px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 45px;
+            text-align: center;border-color: black;
+    border-style: groove;
+    margin-left: 15px;
+    margin-right: 15px;">
+    <label class="pin-label font-weight-bold">{{inputed_numeric}}</label>
+    </div>
+     </div>
+        <div class="col-sm-4" align="center">
+            <b><h3 style="margin-top: 18px;word-wrap: break-word;">ENTER MINUTES</h3></b>
+         </div>
+     </div>
+     <div class="row">
+        <div class="col-sm-8" align="center">
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="1" (click)="getbuttonValueQuantity4(1);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="2" (click)="getbuttonValueQuantity4(2);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="3" (click)="getbuttonValueQuantity4(3);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="4" (click)="getbuttonValueQuantity4(4);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="5" (click)="getbuttonValueQuantity4(5);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="6" (click)="getbuttonValueQuantity4(6);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="7" (click)="getbuttonValueQuantity4(7);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="8" (click)="getbuttonValueQuantity4(8);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="9" (click)="getbuttonValueQuantity4(9);" />  
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="DEL" (click)="getbuttonValueQuantity4('DEL');" />     
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="0" (click)="getbuttonValueQuantity4(0);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="00" (click)="getbuttonValueQuantity4('00');" />        
+        </div>
+        <div class="col-sm-4" align="center">
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-green btn3d font-weight-bold" value="OK" (click)="getbuttonValueQuantity4('OK');" />
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-info btn3d font-weight-bold" value="CLEAR" (click)="getbuttonValueQuantity4('CLEAR');" />
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" value="CANCEL" (click)="getbuttonValueQuantity4('CANCEL');" />
+        </div>
+     </div>
+        
+</div>
+</div>
+</div>
+</div>
+
+<div bsModal #dialogDatePicker="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>Set Date</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+    <div class="col-12" style="zoom:200%;">
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date" [(ngModel)]="inputed_date"
+                style="font-size: 14pt; zoom:300%; width:300px;text-align:center;">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker style="height: 200px;  font-size: 14pt; width: 100%"></mat-datepicker>
+        </mat-form-field>
+    </div>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+        value="OK" (click)="addDelay(false);"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="CANCEL" (click)="hideDialogDatePicker();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+
+<div bsModal #dialogTimePicker="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>Set Time</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+    <div class="col-12">
+        <div style="display:inline-block; ">
+            <input id="inputed_numeric" type="time" name="inputed_numeric" [(ngModel)]="inputed_numeric" value="{{inputed_numeric}}" style="zoom:300%; width:300px; text-align:center;font-size:28pt;">
+        </div>
+    </div>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+        value="OK" (click)="addDelay();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="CANCEL" (click)="hideTimePicker();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #dialogNotAuthorized="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="left" style="background-color: midnightblue;color: white;;">
+    <div class="col-sm-12"><h3><b>WARNING</b></h3></div>
+ </div>
+ <div class="modal-body">
+        <h2 style="text-align: center;
+        vertical-align: middle;
+        line-height: 7;
+        font-size: 45px;">You are not authorized to access this function.</h2>
+</div>
+    <div class="modal-footer">
+            <div class="col-sm-12">
+                <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%;height: 80%;" 
+                              value="CANCEL" (click)="hideDialogNotAuthorized();"/>
+             </div>
+     </div>
+ </div>
+
+</div>
+</div>
+
+<div bsModal #dialogAskForSupervisor="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-body">
+     <div class="row">
+        <div class="col-sm-8">
+            <div style="    background-color: white;
+            height: 80px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 45px;
+            text-align: center;border-color: black;
+    border-style: groove;
+    margin-left: 15px;
+    margin-right: 15px;">
+    <label class="pin-label font-weight-bold">{{utilityService.supervisorconvertedpin}}</label>
+    </div>
+     </div>
+        <div class="col-sm-4" align="center">
+            <h3 style="margin-top: 2px;word-wrap: break-word;font-size: 34px;">SUPERVISOR PIN REQUIRED</h3>
+         </div>
+     </div>
+     <div class="row">
+        <div class="col-sm-8" align="center">
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="1" (click)="getbuttonValue(1);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="2" (click)="getbuttonValue(2);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="3" (click)="getbuttonValue(3);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="4" (click)="getbuttonValue(4);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="5" (click)="getbuttonValue(5);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="6" (click)="getbuttonValue(6);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="7" (click)="getbuttonValue(7);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="8" (click)="getbuttonValue(8);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="9" (click)="getbuttonValue(9);" />  
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="DEL" (click)="getbuttonValue('DEL');" />        
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="0" (click)="getbuttonValue(0);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="00" (click)="getbuttonValue('00');" />                    
+        </div>
+        <div class="col-sm-4" align="center">
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-green btn3d font-weight-bold" value="OK" (click)="getbuttonValue('OK');" />
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-info btn3d font-weight-bold" value="CLEAR" (click)="getbuttonValue('CLEAR');" />
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" value="CANCEL" (click)="getbuttonValue('CANCEL');" />
+        </div>
+     </div>
+       
+</div>
+<!-- <div class="modal-footer">
+    <div class="col-sm-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" value="OK" (click)="getbuttonValue('OK');" />
+    </div>
+    <div class="col-sm-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" value="CANCEL" (click)="getbuttonValue('CANCEL');" />
+     </div>
+</div> -->
+ </div>
+
+</div>
+</div>
+
+
+<div bsModal #dialogNumericKeyPad="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-body">
+     <div class="row">
+        <div class="col-sm-8">
+            <div style="    background-color: white;
+            height: 80px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 45px;
+            text-align: center;border-color: black;
+    border-style: groove;
+    margin-left: 15px;
+    margin-right: 15px;">
+    <label class="pin-label font-weight-bold">{{inputed_numeric}}</label>
+    </div>
+     </div>
+        <div class="col-sm-4" align="center">
+            <b><h3 style="margin-top: 18px;word-wrap: break-word;font-size: 34px;">ENTER TOTAL QUANTITY</h3></b>
+         </div>
+     </div>
+     <div class="row">
+        <div class="col-sm-8" align="center">
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="1" (click)="getbuttonValueQuantity(1);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="2" (click)="getbuttonValueQuantity(2);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="3" (click)="getbuttonValueQuantity(3);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="4" (click)="getbuttonValueQuantity(4);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="5" (click)="getbuttonValueQuantity(5);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="6" (click)="getbuttonValueQuantity(6);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="7" (click)="getbuttonValueQuantity(7);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="8" (click)="getbuttonValueQuantity(8);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="9" (click)="getbuttonValueQuantity(9);" />  
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="DEL" (click)="getbuttonValueQuantity('DEL');" />     
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="0" (click)="getbuttonValueQuantity(0);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="00" (click)="getbuttonValueQuantity('00');" />        
+        </div>
+        <div class="col-sm-4" align="center">
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-green btn3d font-weight-bold" value="OK" (click)="getbuttonValueQuantity('OK');" />
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-info btn3d font-weight-bold" value="CLEAR" (click)="getbuttonValueQuantity('CLEAR');" />
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" value="CANCEL" (click)="getbuttonValueQuantity('CANCEL');" />
+        </div>
+     </div>
+        
+</div>
+ </div>
+
+</div>
+</div>
+
+<div bsModal #dialogNumericKeyPad2="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-body">
+     <div class="row">
+        <div class="col-sm-8">
+            <div style="    background-color: white;
+            height: 80px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 45px;
+            text-align: center;border-color: black;
+    border-style: groove;
+    margin-left: 15px;
+    margin-right: 15px;">
+    <label class="pin-label font-weight-bold">{{inputed_numeric}}</label>
+    </div>
+     </div>
+        <div class="col-sm-4" align="center">
+            <b><h3 style="margin-top: 18px;word-wrap: break-word;">ENTER TOTAL COURSE</h3></b>
+         </div>
+     </div>
+     <div class="row">
+        <div class="col-sm-8" align="center">
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="1" (click)="getbuttonValueQuantity2(1);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="2" (click)="getbuttonValueQuantity2(2);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="3" (click)="getbuttonValueQuantity2(3);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="4" (click)="getbuttonValueQuantity2(4);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="5" (click)="getbuttonValueQuantity2(5);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="6" (click)="getbuttonValueQuantity2(6);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="7" (click)="getbuttonValueQuantity2(7);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="8" (click)="getbuttonValueQuantity2(8);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="9" (click)="getbuttonValueQuantity2(9);" />  
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="DEL" (click)="getbuttonValueQuantity2('DEL');" />     
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="0" (click)="getbuttonValueQuantity2(0);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="00" (click)="getbuttonValueQuantity2('00');" />        
+        </div>
+        <div class="col-sm-4" align="center">
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-green btn3d font-weight-bold" value="OK" (click)="getbuttonValueQuantity2('OK');" />
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-info btn3d font-weight-bold" value="CLEAR" (click)="getbuttonValueQuantity2('CLEAR');" />
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" value="CANCEL" (click)="getbuttonValueQuantity2('CANCEL');" />
+        </div>
+     </div>
+        
+</div>
+</div>
+</div>
+</div>
+
+<div bsModal #dialogNumericKeyPad3="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-body">
+     <div class="row">
+        <div class="col-sm-8">
+            <div style="    background-color: white;
+            height: 80px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 45px;
+            text-align: center;border-color: black;
+    border-style: groove;
+    margin-left: 15px;
+    margin-right: 15px;">
+    <label class="pin-label font-weight-bold">{{inputed_numeric}}</label>
+    </div>
+     </div>
+        <div class="col-sm-4" align="center">
+            <b><h3 style="margin-top: 18px;word-wrap: break-word;">ENTER PRICE</h3></b>
+         </div>
+     </div>
+     <div class="row">
+        <div class="col-sm-8" align="center">
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="1" (click)="getbuttonValueQuantity3(1);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="2" (click)="getbuttonValueQuantity3(2);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="3" (click)="getbuttonValueQuantity3(3);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="4" (click)="getbuttonValueQuantity3(4);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="5" (click)="getbuttonValueQuantity3(5);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="6" (click)="getbuttonValueQuantity3(6);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="7" (click)="getbuttonValueQuantity3(7);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="8" (click)="getbuttonValueQuantity3(8);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="9" (click)="getbuttonValueQuantity3(9);" />  
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="DEL" (click)="getbuttonValueQuantity3('DEL');" />     
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="0" (click)="getbuttonValueQuantity3(0);" />
+            <input type="button" style="width: 32%" class="askForSupervisorButton btn-primary btn3d font-weight-bold" value="00" (click)="getbuttonValueQuantity3('00');" />        
+        </div>
+        <div class="col-sm-4" align="center">
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-green btn3d font-weight-bold" value="OK" (click)="getbuttonValueQuantity3('OK');" />
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-info btn3d font-weight-bold" value="CLEAR" (click)="getbuttonValueQuantity3('CLEAR');" />
+            <input type="button" style="height: 30%;" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" value="CANCEL" (click)="getbuttonValueQuantity3('CANCEL');" />
+        </div>
+     </div>
+        
+</div>
+</div>
+</div>
+</div>
+
+<div bsModal #openSeatList="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>SELECT SEAT</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 350px;">
+     <table class="table table-striped" style="">
+        <thead class="thead-dark">
+            <tr>
+               <th scope="col" style="width: 300px;"><h2><b>SEAT #</b></h2></th>
+               <th scope="col" width="*"><h2><b>CUSTOMER</b></h2></th>
+            </tr>
+        </thead>
+         <tbody >
+            <tr *ngFor="let meal of utilityService.globalInstance.SelectedTableDetail.GetSaleItems" id="SeatListID-{{meal.CustomerId}}" (click)="addCustomerSplitItems(meal.CustomerId);" style="font-size: 18px;" >
+                <td *ngIf="this.utilityService.splitItemSelectedCustomer != meal.CustomerId">
+                    <h2><b>{{meal.SeatNumber}}</b></h2>
+                </td>
+                <td *ngIf="this.utilityService.splitItemSelectedCustomer != meal.CustomerId">
+                    <h2><b>{{meal.Description}}</b></h2>
+                </td>
+            </tr>
+         </tbody>
+     </table>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 100%;    height: 80%;" 
+        value="SPLIT ITEM" (click)="splitItem();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%;    height: 80%;" 
+                      value="CANCEL" (click)="closeOpenSeatListModal();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+
+<div bsModal #diaglogAutopaySale="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>Autopay Sale</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+    <div class="col-12"><h2 style="text-align: center;
+        vertical-align: middle;
+        line-height: 7;
+        font-size: 45px;">Are you sure you want to autopay this sale?</h2></div>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+        value="YES" (click)="autoPay();"/>
+     </div>
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="NO" (click)="hideDialogAutoPay();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+
+<div bsModal #storedTransaction="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>OFFLINE CREDIT CARD</b></h1></div>
+ </div>
+ <div class="modal-body">
+
+    <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height:415px;">
+        <table class="table table-bordered">
+           <thead class="thead-dark">
+               <tr>
+                  <th scope="col"><label style="font-size:20px;"><b>CHECK #</b></label></th>
+                  <th scope="col"><label style="font-size:20px;"><b>TRANSACTION TYPE</b></label></th>
+                  <th scope="col"><label style="font-size:20px;"><b>CREATED DATE</b></label></th>
+                  <th scope="col"><label style="font-size:20px;"><b>TOTAL AMOUNT</b></label></th>
+                  <th scope="col"><label style="font-size:20px;"><b>STATE</b></label></th>
+                  <th scope="col"><label style="font-size:20px;"><b>DEVICE</b></label></th>
+                  <th scope="col"><label style="font-size:20px;"><b>ACTION</b></label></th>
+               </tr>
+           </thead>
+            <tbody >
+               <tr *ngFor="let s of utilityService.storedTransactions">
+                   <td >
+                       <label style="font-size:20px;"><b>{{s.CheckNumber}}</b></label>
+                   </td>
+                   <td>
+                       <label style="font-size:20px;"><b>{{s.transactionType}}</b></label>
+                   </td>
+                   <td>
+                       <label style="font-size:20px;"><b>{{s.createdDate}}</b></label>
+                   </td>
+                   <td>
+                       <label style="font-size:20px;"><b>{{s.totalAmount}}</b></label>
+                   </td>
+                   <td>
+                       <label style="font-size:20px;"><b>{{s.state}}</b></label>
+                   </td>
+                   <td>
+                    <label style="font-size:20px;"><b>{{s.device}}</b></label>
+                    </td>
+                   <td>
+                    <input *ngIf="s.state=='Declined' && utilityService.hasInternetConnection == true" type="button" value="RETRY" class="" (click)="saleManualForward(s.tpRequestId,s.totalAmount)">
+                    <input *ngIf="s.state=='Declined' && utilityService.hasInternetConnection == true" type="button" value="X" class="" (click)="deleteStoredTransaction(s.tpRequestId)">
+                </td>
+               </tr>
+            </tbody>
+        </table>
+      </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-6">
+        <!-- <input type="button" class="btn-rectangle2 btn-success btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="FORWARD" (click)="hide_restoredTransactionList();" /> -->
+     </div>
+    <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="CANCEL" (click)="hide_restoredTransactionList();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #enterChargeTip="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-9" align="left"><h1 id="dialog-child-name" class="modal-title pull-left"><b>ENTER CHARGE TIP</b></h1></div>
+    <div class="col-3" align="right">
+        <input type="button" class="btn-rectangle-small btn-logoff font-weight-bold" style="width: 30%;height: 20%;" 
+        value="X" (click)="closeEnterChargeTip();" />
+     </div>
+ </div>
+ <div class="modal-body">
+    <div class="row" align="center">
+    </div>
+<table mat-table [dataSource]="dataSource_CcTipList" matSort class="mat-elevation-z0">
+
+  <!-- Position Column -->
+  <ng-container matColumnDef="CheckNumber">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+    <td mat-cell *matCellDef="let element" (click)="selectedCheckChargeTip(element);" [ngStyle]="dynamicFontColor(element)">
+        <label >{{element.CheckNumber}}</label>  
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="StartDate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> START DATE</th>
+    <td mat-cell *matCellDef="let element" (click)="selectedCheckChargeTip(element);" [ngStyle]="dynamicFontColor(element)">
+        <label >{{element.StartDate}}</label>  </td>
+  </ng-container>
+
+  <ng-container matColumnDef="CardNumber">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> CARD NUMBER </th>
+    <td mat-cell *matCellDef="let element" (click)="selectedCheckChargeTip(element);" [ngStyle]="dynamicFontColor(element)">
+        <label >{{element.CardNumber}}</label>  </td>
+  </ng-container>
+
+  <ng-container matColumnDef="CreditCardType">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> CARD TYPE </th>
+    <td mat-cell *matCellDef="let element" (click)="selectedCheckChargeTip(element);" [ngStyle]="dynamicFontColor(element)">
+        <label >{{element.CreditCardType}} </label> </td>
+  </ng-container>
+
+  <ng-container matColumnDef="TableName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> TABLE NAME </th>
+    <td mat-cell *matCellDef="let element" (click)="selectedCheckChargeTip(element);" [ngStyle]="dynamicFontColor(element)"> 
+        <label >{{element.TableName}}</label> </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Amount">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> AMOUNT </th>
+    <td mat-cell *matCellDef="let element" (click)="selectedCheckChargeTip(element);" [ngStyle]="dynamicFontColor(element)"> 
+        <label >{{element.Amount}}</label> </td>
+  </ng-container>
+
+  <ng-container matColumnDef="TipAmount">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> TIP AMOUNT </th>
+    <td mat-cell *matCellDef="let element" (click)="selectedCheckChargeTip(element);" [ngStyle]="dynamicFontColor(element)"> 
+        <label >{{element.TipAmount}}</label> </td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+ </div>
+ <div class="modal-footer"></div>
+ <mat-paginator style="font-size: 18px;" [pageSizeOptions]="[8, 16, 24]" showFirstLastButtons></mat-paginator>
+</div>
+</div>
+</div>
+
+
+<!-- <div bsModal #pinPadTipAmount="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-9" align="left"><h1 id="dialog-child-name" class="modal-title pull-left"><b>ENTER TIP AMOUNT FOR CHECK {{utilityService.selectedCheckChargeTipChecknum }}</b></h1></div>
+    <div class="col-3" align="right">      
+         <input type="button" class="btn-rectangle-small btn-logoff font-weight-bold" style="width: 30%;height: 20%;" 
+        value="X" (click)="closepinPadTipAmount();"/></div>
+ </div>
+ <div class="modal-body">
+    <app-pinpad-v2></app-pinpad-v2>
+ </div>
+</div>
+</div>
+</div> -->
+
+
+<div bsModal #pinPadTipAmount="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-body">
+    <app-pinpad-v2></app-pinpad-v2>
+</div>
+</div>
+</div>
+</div>
+
+
+<div bsModal #ccprocessingDialog="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header" align="center">
+        <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left" ><b style="font-size: 40px;  text-transform: uppercase;"></b></h1></div>
+     </div>
+ <div class="modal-body">
+    <div class="row" align="center">
+        <div class="col-12"><h2 style="text-align: center;
+            vertical-align: middle;
+            line-height: 7;
+            font-size: 45px;">Proccessing Transaction</h2></div>
+       </div>
+</div>
+<div class="modal-footer">
+  <!--   <div class="col-12">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="CLOSE" (click)="closeCCprocessingDialog();" />
+     </div> -->
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #lookUpResident="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header" align="center">
+        <div class="col-9" align="left"><h1 id="dialog-child-name" class="modal-title pull-left"><b>SELECT CUSTOMER</b></h1></div>
+        <div class="col-3" align="right">
+            <input type="button" class="btn-rectangle-small btn-logoff font-weight-bold" style="width: 30%;height: 20%;" 
+            value="X" (click)="closelookUpResident();" />
+         </div>
+     </div>
+ <div class="modal-body">
+    <div class="row" align="center">
+        <div class="col-sm-6">
+            <form class="search-resident-form" style="margin-top: -5px;">
+              <mat-form-field class="search-resident-full-width text-white">
+                <input #trigger="matAutocompleteTrigger" type="text" style="background-color: white;font-size:25px;    height: 95px;color: #000;" id="SearchCustomerNameOrdering" class="text-black input font-weight-bold" aria-label="Select customer" matInput [formControl]="myControl" [matAutocomplete]="auto" (input)="onInputChange($event)" value="{{value}}" (focus)="focusFunction()" (focusout)="focusOutFunction()" (keydown)="onKeydown($event)" autofocus  />
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="font-weight-bold">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option" >
+                    <h3 style="font-weight: bold;">{{option.Name}}</h3>
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </form>
+          </div>
+          <div class="col-sm-6">
+                <input type="button" class="btn-rectangle2 btn-success btn3d font-weight-bold" style="width: 50%; height: 50%;" 
+                value="OK"  (click)="assignSeatQuickService();"/>
+                <input type="button" class="btn-rectangle2 btn-success btn3d font-weight-bold" style="width: 50%; height: 50%;" 
+                value="MORE"  (click)="more()"/>
+          </div>
+       </div>
+</div>
+<div class="modal-footer">
+    <!-- <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="CLOSE" (click)="closelookUpResident();" />
+     </div> -->
+ </div>
+</div>
+</div>
+<div id="container-keyboard" class="hide">
+    <div style="width: 100%; background: black;">
+      <input type="button" value="X" class="btn btn-danger" (click)="closeKeyboard()"
+        style="float: right; width: 50px; height: 50px; font-size: 14pt;" />
+    </div>
+    <div class="simple-keyboard" (click)="open(); $event.stopPropagation()"></div>
+  </div>
+</div>
+
+
+<div bsModal #customerInfo="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header" align="center">
+        <div class="col-9" align="left"><h1 id="dialog-child-name" class="modal-title pull-left"><b>CUSTOMER INFORMATION</b></h1></div>
+<div class="col-3" align="right">
+    <input type="button" class="btn-rectangle-small btn-logoff font-weight-bold" style="width: 30%;height: 20%;" 
+    value="X" (click)="closeCusInfo();" />
+ </div>
+    </div>
+ <div class="modal-body">
+    <div class="row">
+        <div class="col-sm-5" style="overflow-y: scroll;height: 545px">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputEmail4">Customer Number</label>
+                      <input type="text" class="form-control" placeholder="{{customerNumber}}" readonly>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputPassword4">Birthdate</label>
+                      <input type="text" class="form-control"  placeholder="{{customerBirthdate}}" readonly>
+                    </div>
+                  </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputEmail4">Last Name</label>
+                    <input type="text" class="form-control" placeholder="{{customerLastName}}" readonly>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputPassword4">First Name </label>
+                    <input type="text" class="form-control"  placeholder="{{customerFirstName}}" readonly>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputAddress">Address</label>
+                  <input type="text" class="form-control" id="inputAddress" placeholder="{{customerAddress}}" readonly>
+                </div>
+                <div class="form-group">
+                  <label for="inputAddress2">Address 2</label>
+                  <input type="text" class="form-control" id="inputAddress2" placeholder="{{customerAddress2}}" readonly>
+                </div>
+                <div class="form-row">
+                    <label for="inputAddress2">Email</label>
+                    <input type="text" class="form-control" id="inputAddress2" placeholder="{{customerEmail}}" readonly>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputCity">Phone</label>
+                    <input type="text" class="form-control" id="inputCity" placeholder="{{customerPhone}}" readonly>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="inputState">City</label>
+                    <input type="text" class="form-control" id="inputCity" placeholder="{{customerCity}}" readonly>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <label for="inputZip">Zip</label>
+                    <input type="text" class="form-control" id="inputZip" placeholder="{{customerZip}}" readonly>
+                  </div>
+                </div>
+              </form>
+        </div>
+        <div class="col-sm-4 border border-dark">
+            <div class="row">
+                <div class="col-sm-6"><input type="button" value="<" (click)="previousCustomerLastOrder()" class="btn btn-secondary"></div>
+                <div class="col-sm-6" align="right"><input type="button" value=">" (click)="nextCustomerLastOrder()" class="btn btn-secondary"></div>
+            </div>
+            <div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="">Last Order</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="">{{customerInfoOrderDate}}</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="">Check #</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="">{{customerInfoCheckNumber}}</label>
+                    </div>
+                </div>
+              <hr>
+              <div>{{customerSeat}}</div>
+              <div *ngFor="let order of customerOrderList">
+                <label for="">{{order.Item}}</label>
+              </div>
+            </div>
+
+        </div>
+        <div class="col-sm-3">
+            <input type="button" class="btn-rectangle2 btn-success btn3d font-weight-bold" style="font-size: 25px;"
+            value="FREQUENT DINER" (click)="openFrequentDiner()"/>
+            <input type="button" class="btn-rectangle2 btn-success btn3d font-weight-bold" style="font-size: 25px;"
+value="CREDIT CARD INFO"/>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div bsModal #frequentDiner="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header" align="center">
+        <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left" ><b style="font-size: 40px;  text-transform: uppercase;">FREQUENT DINER INFO</b></h1>
+     </div>
+     </div>
+ <div class="modal-body">
+    <div class="row" >
+        <div class="col-sm-6 border border-dark">
+            <div class="col-sm-12" >
+                <H3>FREQUENT DINER PLANS ASSIGNED TO</H3>
+            </div>
+            <div class="">
+                <div class="col-sm-12" *ngFor="let plan of customerDinerPlan">
+                    <label >{{plan}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 border border-dark">
+            <div class="col-sm-12">
+                <H3>FREQUENT DINER STATUS</H3>
+            </div>
+            <div class="">
+                <div class="col-sm-12" *ngFor="let status of customerDinerStatus">
+                    <label>{{status}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+  <div class="col-12">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="CLOSE" (click)="hideFrequentDiner();" />
+     </div> 
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #assignSeatConfirmation="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header" align="center">
+        <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left" ><b style="font-size: 40px;  text-transform: uppercase;">CONFIRMATION</b></h1>
+     </div>
+     </div>
+ <div class="modal-body">
+     <br/>
+     <br/>
+    <div class="row" >
+        <div class="col-12" align="center">
+            <h1>Are you sure you want to replace the existing customer?</h1>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+  <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-success btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="YES" (click)="saveCustomerOnSeat();" />
+     </div> 
+     <div class="col-6">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="NO" (click)="hideassignSeatConfirmation();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #fastCashDialog="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+    <div class="modal-header" align="center">
+        <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left" ><b style="font-size: 40px;  text-transform: uppercase;">FAST CASH</b></h1>
+     </div>
+     </div>
+ <div class="modal-body">
+    <div class="row" >
+        <h1>{{this.utilityService.grandtotal}}</h1>
+    </div>
+</div>
+<div class="modal-footer">
+  <div class="col-12">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%; height: 80%;" 
+                      value="CLOSE" (click)="hidefastCashDialog();" />
+     </div> 
+ </div>
+</div>
+</div>
+</div>
+
+
+
+
+

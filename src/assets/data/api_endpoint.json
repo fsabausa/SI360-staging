@@ -1,0 +1,414 @@
+[
+  {
+    "ApiUrlDesc": "GetCustomerList",
+    "ApiUrlRoute": "api/v1/customer/getCustomerList"
+  },
+  {
+    "ApiUrlDesc": "GetMealPlanListURL",
+    "ApiUrlRoute": "api/v1/mealplan/mealplan"
+  },
+  {
+    "ApiUrlDesc": "GetRoomListURL",
+    "ApiUrlRoute": "api/v1/LayoutRoom/layoutroom/"
+  },
+  {
+    "ApiUrlDesc": "GetSelectedRoomURL",
+    "ApiUrlRoute": "api/v1/layouttable/SelectedRoom/"
+  },
+  {
+    "ApiUrlDesc": "GetSelectedTableURL",
+    "ApiUrlRoute": "api/v1/layouttable/SelectedTable/"
+  },
+  {
+    "ApiUrlDesc": "GetSeatDetailBySeatNo",
+    "ApiUrlRoute": "api/v1/seat/GetSeatDetailBySeatNo/"
+  },
+  {
+    "ApiUrlDesc": "GetCustomerDetailURL",
+    "ApiUrlRoute": "api/v1/customer/getcustomer/"
+  },
+  {
+    "ApiUrlDesc": "PostAddSeatURL",
+    "ApiUrlRoute": "api/v1/seat/AddSeat"
+  },
+  {
+    "ApiUrlDesc": "PostAssignSeatURL",
+    "ApiUrlRoute": "api/v1/seat/assignSeat"
+  },
+  {
+    "ApiUrlDesc": "RemoveSeat",
+    "ApiUrlRoute": "api/v1/seat/deleteseat/"
+  },
+  {
+    "ApiUrlDesc": "ChangeTableURL",
+    "ApiUrlRoute": "api/v1/layouttable/ChangeTable/"
+  },
+  {
+    "ApiUrlDesc": "GetUpdatedMealPlan",
+    "ApiUrlRoute": "api/v1/mealplan/GetUpdateMealPlan/"
+  },
+  {
+    "ApiUrlDesc": "GetCustomerMealPlanDetailURL",
+    "ApiUrlRoute": "api/v1/saleitem/getSaleItems/"
+  },
+  {
+    "ApiUrlDesc": "UpdateSeat",
+    "ApiUrlRoute": "api/v1/seat/ReassignSeat/"
+  },
+  {
+    "ApiUrlDesc": "SyncSale",
+    "ApiUrlRoute": "api/v1/SyncLocalToMaster/SyncSale"
+  },
+  {
+    "ApiUrlDesc": "CheckOfflineOrder",
+    "ApiUrlRoute": "api/v1/SyncLocalToMaster/HasOfflineOrder/"
+  },
+  {
+    "ApiUrlDesc": "GenerateCheckNumber",
+    "ApiUrlRoute": "http://104.215.57.192:2324/api/v1/sale/GenerateCheckNumber/"
+  },
+  {
+    "ApiUrlDesc": "SignOn",
+    "ApiUrlRoute": "api/v1/Employee/SignOn"
+  },
+  {
+    "ApiUrlDesc": "UpdatePin",
+    "ApiUrlRoute": "api/v1/employee/updatePIN"
+  },
+  {
+    "ApiUrlDesc": "ListOfCustomer",
+    "ApiUrlRoute": "http://104.215.57.192:2324/api/v1/Employee/GetEmployee"
+  },
+  {
+    "ApiUrlDesc": "PullingCustomer",
+    "ApiUrlRoute": "http://104.215.57.192:2324/api/v1/Employee/GetEmployee"
+  },
+  {
+    "ApiUrlDesc": "SettleCheckResidentCharge",
+    "ApiUrlRoute": "http://104.215.57.192:2324/api/openCheck/v1/ResidentChargeSettleCheck"
+  },
+  {
+    "ApiUrlDesc": "GetMenu",
+    "ApiUrlRoute": "api/v1/buttons/mealbuttons"
+  },
+  {
+    "ApiUrlDesc": "GetMenuItems",
+    "ApiUrlRoute": "api/v1/buttons/menuitems/"
+  },
+  {
+    "ApiUrlDesc": "GetOpenChecks",
+    "ApiUrlRoute": "api/openCheck/v1/getOpenChecks/"
+  },
+  {
+    "ApiUrlDesc": "GetOpenChecksByManager",
+    "ApiUrlRoute": "api/openCheck/v1/getOpenChecksByManager/"
+  },
+  {
+    "ApiUrlDesc": "GetGuestCheckDetail",
+    "ApiUrlRoute": "api/checkui/v1/getGuestCheck/"
+  },
+  {
+    "ApiUrlDesc": "AddOrder",
+    "ApiUrlRoute": "api/v1/saleitem/orders/"
+  },
+  {
+    "ApiUrlDesc": "GetMedia",
+    "ApiUrlRoute": "api/v1/media/getMedia"
+  },
+  {
+    "ApiUrlDesc": "GetDefaultMedia",
+    "ApiUrlRoute": "api/v1/media/getDefaultMedia"
+  },
+  {
+    "ApiUrlDesc": "GetCustomerDetailCreditCard",
+    "ApiUrlRoute": "api/v1/customer/getcustomerDetailCreditCard/"
+  },
+  {
+    "ApiUrlDesc": "GetMenuItemPrice",
+    "ApiUrlRoute": "api/menu/v1/Items/"
+  },
+  {
+    "ApiUrlDesc": "FireAll",
+    "ApiUrlRoute": "api/openCheck/v1/FireAll"
+  },
+  {
+    "ApiUrlDesc": "DeleteItem",
+    "ApiUrlRoute": "api/v1/saleitem/DeleteItem/"
+  },
+  {
+    "ApiUrlDesc": "FireSelected",
+    "ApiUrlRoute": "api/v1/print/FireSelected"
+  },
+  {
+    "ApiUrlDesc": "PayCheck",
+    "ApiUrlRoute": "api/payment/v1/PayCheck"
+  },
+  {
+    "ApiUrlDesc": "GetStoreID",
+    "ApiUrlRoute": "api/v1/store/getStoreID"
+  },
+  {
+    "ApiUrlDesc": "GetStatus",
+    "ApiUrlRoute": "api/v1/status/getStatus"
+  },
+  {
+    "ApiUrlDesc": "UploadPhoto",
+    "ApiUrlRoute": "api/v1/customer/UploadPhoto"
+  },
+  {
+    "ApiUrlDesc": "GetScreenLayoutDetail",
+    "ApiUrlRoute": "api/v1/uisetting/screenlayout/"
+  },
+  {
+    "ApiUrlDesc": "SaveScreenLayout",
+    "ApiUrlRoute": "api/v1/uisetting/SaveScreenLayout/"
+  },
+  {
+    "ApiUrlDesc": "GetModifierSaleItem",
+    "ApiUrlRoute": "api/v1/saleitem/modify/"
+  },
+  {
+    "ApiUrlDesc": "SaveModifierSaleItem",
+    "ApiUrlRoute": "api/v1/saleitem/SaveModify/"
+  },
+  {
+    "ApiUrlDesc": "GetSiposAccessToken",
+    "ApiUrlRoute": "api/v1/account/access/"
+  },
+  {
+    "ApiUrlDesc": "PostComment",
+    "ApiUrlRoute": "api/v1/saleitem/comment"
+  },
+  {
+    "ApiUrlDesc": "CancelSale",
+    "ApiUrlRoute": "api/v1/saleitem/CancelSale"
+  },
+  {
+    "ApiUrlDesc": "GetSignOnSetting",
+    "ApiUrlRoute": "api/v1/status/getSignOnSetting"
+  },
+  {
+    "ApiUrlDesc": "LogOut",
+    "ApiUrlRoute": "api/v1/Employee/LogOut"
+  },
+  {
+    "ApiUrlDesc": "GetSettlement",
+    "ApiUrlRoute": "api/openCheck/v1/ResidentChargeSettlement"
+  },
+  {
+    "ApiUrlDesc": "GetSignOnSetting",
+    "ApiUrlRoute": "api/v1/status/getSignOnSetting"
+  },
+  {
+    "ApiUrlDesc": "UploadFPOSSale",
+    "ApiUrlRoute": "api/v1/SyncLocalToMaster/SyncFPOSSale"
+  },
+  {
+    "ApiUrlDesc":"GetNavigationButtons",
+    "ApiUrlRoute":"api/v1/buttons/navButtons"
+  },
+  {
+    "ApiUrlDesc":"GetNavigationButtonFunction",
+    "ApiUrlRoute":"api/v1/buttons/NavigationButtonFunction"
+  },
+  {
+    "ApiUrlDesc":"GetMealTypeFilters",
+    "ApiUrlRoute":"api/v1/mealType/MealTypeFilter"
+  },
+  {
+    "ApiUrlDesc":"GetMasterAPI",
+    "ApiUrlRoute":"api/v1/SystemSetting/getMasterAPI"
+  },
+  {
+    "ApiUrlDesc": "PrintCheck",
+    "ApiUrlRoute": "api/openCheck/v1/PrintCheck"
+  },
+  {
+    "ApiUrlDesc": "GetDiscountList",
+    "ApiUrlRoute": "api/v1/discount/getDiscountList"
+  },
+  {
+    "ApiUrlDesc": "GetReasonList",
+    "ApiUrlRoute": "api/v1/discount/getReasonList"
+  },
+  {
+    "ApiUrlDesc": "GetSaleItemDiscountList",
+    "ApiUrlRoute": "api/v1/discount/getsaleitemdiscount/"
+  },
+  {
+    "ApiUrlDesc": "SaveSaleDiscount",
+    "ApiUrlRoute": "api/v1/discount/salediscount/"
+  },
+  {
+    "ApiUrlDesc": "SaveSaleItemDiscount",
+    "ApiUrlRoute": "api/v1/discount/saleitemdiscount/"
+  },
+  {
+    "ApiUrlDesc": "DeleteDiscount",
+    "ApiUrlRoute": "api/v1/discount/deletediscount/"
+  },
+  {
+    "ApiUrlDesc":"ButtonFunction",
+    "ApiUrlRoute":"api/v1/buttons/ButtonFunction"
+  },
+  {
+    "ApiUrlDesc": "VoidItem",
+    "ApiUrlRoute": "api/v1/saleitem/VoidItem/"
+  },
+  {
+    "ApiUrlDesc": "ReopenClosedCheck",
+    "ApiUrlRoute": "api/openCheck/v1/ReopenCheck/"
+  },
+  {
+    "ApiUrlDesc": "MoveItem",
+    "ApiUrlRoute": "api/v1/saleitem/MoveItem/"
+  },
+  {
+    "ApiUrlDesc": "SettleMultiple",
+    "ApiUrlRoute": "api/payment/v1/SettleMultiple/"
+  },
+  {
+    "ApiUrlDesc": "EmployeeList",
+    "ApiUrlRoute": "api/v1/employee/getEmployeeList/"
+  },
+  {
+    "ApiUrlDesc": "TransferCheck",
+    "ApiUrlRoute": "api/v1/saleitem/TransferCheck/"
+  },
+  {
+    "ApiUrlDesc": "SaveEmployeeCheck",
+    "ApiUrlRoute": "api/v1/saleitem/SaveEmployeeCheck/"
+  },
+  {
+    "ApiUrlDesc": "EmployeeCheckList",
+    "ApiUrlRoute": "api/v1/employee/getEmployeeCheck/"
+  },
+  {
+    "ApiUrlDesc": "CancelEmployeeCheck",
+    "ApiUrlRoute": "api/v1/saleitem/CancelEmployeeCheck/"
+  },
+  {
+    "ApiUrlDesc": "EmployeeStatusCheckList",
+    "ApiUrlRoute": "api/v1/employee/getEmployeeStatusCheck/"
+  },
+  {
+    "ApiUrlDesc": "SaveSaleCompensation",
+    "ApiUrlRoute": "api/v1/discount/salecompensation/"
+  },
+  {
+    "ApiUrlDesc": "SaveItemQuantity",
+    "ApiUrlRoute": "api/v1/buttons/SaveItemQuantity/"
+  },
+  {
+    "ApiUrlDesc": "ResetItemQuantity",
+    "ApiUrlRoute": "api/v1/buttons/ResetItemQuantity/"
+  },
+  {
+    "ApiUrlDesc": "SyncItem",
+    "ApiUrlRoute": "api/v1/SyncLocalToMaster/SyncItem"
+  },
+  {
+    "ApiUrlDesc": "GetLatestItem",
+    "ApiUrlRoute": "api/v1/buttons/GetLatestItem"
+  },
+  {
+    "ApiUrlDesc" : "SupervisorPIN",
+    "ApiUrlRoute" : "api/v1/employee/SupervisorPIN/"
+  },
+  {
+    "ApiUrlDesc": "GetSaleCourseItems",
+    "ApiUrlRoute": "api/v1/coursing/GetSaleCourseItems"
+  },
+  {
+    "ApiUrlDesc": "SaveCourseItem",
+    "ApiUrlRoute": "api/v1/coursing/SaveCourseItem"
+  },
+  {
+    "ApiUrlDesc": "ApplyCoursing",
+    "ApiUrlRoute": "api/v1/coursing/ApplyCoursing"
+  },
+  {
+    "ApiUrlDesc": "MoveOrderItem",
+    "ApiUrlRoute": "api/v1/coursing/MoveOrderItem"
+  },
+  {
+    "ApiUrlDesc": "ChangeItemPrice",
+    "ApiUrlRoute": "api/v1/buttons/ChangeItemPrice"
+  },
+  {
+    "ApiUrlDesc": "SplitItems",
+    "ApiUrlRoute": "api/v1/saleitem/SplitItems"
+  },
+  {
+    "ApiUrlDesc": "UnsplitItems",
+    "ApiUrlRoute": "api/v1/saleitem/UnsplitItems"
+  },
+  {
+    "ApiUrlDesc": "AddDelay",
+    "ApiUrlRoute": "api/v1/saleitem/AddDelay"
+  },
+  {
+    "ApiUrlDesc": "GetTotalSentToKitchen",
+    "ApiUrlRoute": "api/v1/status/GetTotalSentToKitchen"
+  },
+  {
+    "ApiUrlDesc": "ReprintOrder",
+    "ApiUrlRoute": "api/openCheck/v1/ReprintOrder"
+  },
+  {
+    "ApiUrlDesc": "ReorderItems",
+    "ApiUrlRoute": "api/v1/saleitem/ReorderItems"
+  },
+  {
+    "ApiUrlDesc": "SaveAutoPaySale",
+    "ApiUrlRoute": "api/v1/autopay/SaveAutoPaySale"
+  },
+  {
+    "ApiUrlDesc" : "TriposSale",
+    "ApiUrlRoute" : "/api/v1/sale"
+  },
+  {
+    "ApiUrlDesc": "TriposVersion",
+    "ApiUrlRoute": "/api/v1"  
+  },
+  {
+    "ApiUrlDesc": "TriposAuth",
+    "ApiUrlRoute" : "/api/v1/authorization"
+  },
+  {
+    "ApiUrlDesc": "AddTip",
+    "ApiUrlRoute" : "/api/v1/tripos/AddTip"
+  },
+  {
+    "ApiUrlDesc": "TriposAuthPaymentAccount",
+    "ApiUrlRoute" : "/api/v1/authorization/"
+  },
+  {
+    "ApiUrlDesc": "BalanceGiftCard",
+    "ApiUrlRoute": "/api/v1/balance"
+  },
+  {
+    "ApiUrlDesc": "ApplyOrderType",
+    "ApiUrlRoute": "api/v1/saleitem/ApplyOrderType"
+  },
+  {
+    "ApiUrlDesc" : "VoidCreditCard",
+    "ApiUrlRoute" : "api/v1/saleitem/VoidCreditCardTransaction"
+  },
+  {
+    "ApiUrlDesc" : "StoredTransaction",
+    "ApiUrlRoute": "api/v1/tripos/getStoredTransaction"
+  },
+  {
+    "ApiUrlDesc": "SaleManualForward",
+    "ApiUrlRoute": "/api/v1/tripos/SaleManualForward"
+  },
+  {
+    "ApiUrlDesc": "DeleteStoredTransaction",
+    "ApiUrlRoute" : "api/v1/tripos/DeleteStoredTransaction/" 
+  },
+  {
+    "ApiUrlDesc": "NewOrder",
+    "ApiUrlRoute" : "api/v1/saleitem/NewOrder"
+  }
+]

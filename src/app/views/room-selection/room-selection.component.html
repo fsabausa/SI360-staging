@@ -1,0 +1,185 @@
+<div [ngSwitch]="utilityService.screen" [class]="utilityService.setStatus" id="mainDiv" style="background-color:#343B45;">
+		
+	<div class="rso-main">
+		<div class="container" id="rsoContainer">
+			<div class="row h-100"
+				cdkDropList [cdkDropListData]="utilityService.draggableRSComponents" 
+				(cdkDropListDropped)="onItemDrop($event)"  cdkDropListOrientation="horizontal">
+
+				<div class="{{comp.AppClass}}" *ngFor="let comp of utilityService.draggableRSComponents" cdkDrag style="background: #343B45; padding: 0px; margin: 0px;">
+					<div *ngIf="comp.ControlPanel == 'roomlist'" class="col-sm-12 rsoprimaryBackgroundColor" id="RoomList" style="min-height: 720px;padding: 0px; margin: 0px;">
+						<div class="col-sm-12">
+							<div class="text-align-center text-white" style="color: white; font-weight: bold; font-size: 22px;">
+							<!-- 	<label>{{utilityService.appVersion}}</label> -->
+								<!--  <div class="row"><label style="color: white; font-weight:bold;">Version 1.0.0</label></div> -->
+								<br />
+								<!--   <div class="row h-100" style="overflow-y: scroll;height: 650px;"> -->
+								<div class="row">
+									<div class="col-sm-12">
+										<input type="button" value="LOG OUT" class="btn-room btn-logoff btn3d font-weight-bold" (click)="logOut();" />
+										<input #roomName *ngFor="let room of utilityService.roomList" [ngStyle]="_css_Selected_room(room.RoomName)" type="button" class="btn-room btn-primary btn3d font-weight-bold" (click)="getroomName(roomName.value,room.RoomIndex,utilityService.globalInstance.CurrentUser.EmpID);" value={{room.RoomName}}>
+                   <!--  <input type="button" value="ORDER SCREEN" class="btn-room btn-logoff btn3d font-weight-bold" (click)="getbuttonActionRSO('ADD ORDER',null,null,null,null,null,null,true);" /> -->
+									</div>
+								</div>
+							</div>
+						</div>
+						<div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}"><svg height="30" width="30"><circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" /></svg></div>
+					</div>
+					<div *ngIf="comp.ControlPanel == 'tablelist'"  class="col-sm-12 rsoBackgroundColorBody" style="min-height: 100%; height: 100%; padding: 2%; margin: 0px;">
+						<div class="row rsoBackgroundColorBody" style="overflow-y: scroll;height: 100%; padding: 0px; margin: 0px;">
+							<div class="col-sm-12">
+								<div *ngFor="let table of utilityService.layoutTable">
+									<div class="imgHolder" [ngStyle]="getStyles(table.X,table.Y,table.Shape,table.SaleId,table.CheckCreatedByCurrentUser,table.FromSI360)" (click)="getbuttonActionRSO('Table Selected',table.TableName,table.Shape,table.SeatCount,table.LayoutTableId,table.TakenSeats,table.SaleId,table.CheckCreatedByCurrentUser,table.FromSI360)" (press)="onPress($event)" (pressup)="onPressUp($event, table.LayoutTableId, table.TableName, table.SaleId, table.Shape,table.SeatCount)">
+                                        <Img [src]="utilityService.tableShapeUrl" height="65" width="65">
+                                        <span style="font-size:22px;">{{table.TableName}}</span>
+                                    </div>
+								</div>
+							</div>
+						</div>
+						<div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}"><svg height="30" width="30"><circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" /></svg></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 
+<div bsModal #childModal="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog modal-md">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+   <h4 id="dialog-child-name" class="modal-title pull-left">You Have Been Idle!</h4>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+	   <h1> {{idleState}}</h1>
+   </div>
+   <div class="row mrgbtm">
+     <div class="col-sm-6">
+		 <input style="font-weight: bold; padding: 15px; font-size: 25px; height: 80px;width: 100%;" type="button" value="LOGOUT" class="btn-danger" (click)="logout()">
+     </div>
+     <div class="col-sm-6">
+		 <input style="font-weight: bold; padding: 15px; font-size: 25px; height: 80px;width: 100%;" type="button" value="STAY" class="btn-success" (click)="stay()">
+     </div>
+   </div>
+ </div>
+</div>
+</div>
+</div> -->
+
+
+<div bsModal #openEmployeeCheckList="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-6"><h1 id="dialog-child-name" class="modal-title pull-left"><b>SELECT CHECKNUMBER</b></h1></div>
+     <div class="col-6"><h1 style="color: #021CA3;"><b>{{utilityService.selectedEmployeeCheckListMsg}}</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 350px;">
+     <table class="table table-striped" style="">
+        <thead class="thead-dark">
+            <tr>
+               <th scope="col" style="width: 300px;"><h2><b>Check Number</b></h2></th>
+               <th scope="col" width="*"><h2><b>Transferred By</b></h2></th>
+            </tr>
+        </thead>
+         <tbody >
+            <tr *ngFor="let emp of utilityService.employeeCheckList" (click)="setSelectedEmployeeCheckList(emp.SaleId, emp.EmpFrom,emp.CheckNumber);" id="EmployeeCheckListID-{{emp.SaleId}}" style="font-size: 18px;">
+                <td>
+                    <h2><b>{{emp.CheckNumber}}</b></h2>
+                </td>
+                <td>
+                    <h2><b>{{emp.EmpSender}}</b></h2>
+                </td>
+            </tr>
+         </tbody>
+     </table>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-4">
+        <input type="button" class="btn-rectangle2 btn-green btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+        value="Accept Check" (click)="setTransferTable();"/>
+     </div>
+     <div class="col-4">
+        <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 95%;    height: 90%;" 
+                      value="Return Check" (click)="setCancelCheck();" />
+     </div>
+     <div class="col-4">
+        <input type="button" class="btn-rectangle2 btn-orange btn3d borderRadius5 font-weight-bold" style="width: 95%;    height: 90%;" 
+                      value="Remind Later" (click)="closeOpenEmployeeCheckListModal();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+
+<div bsModal #openEmployeeStatusCheckList="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="center">
+    <div class="col-12"><h1 id="dialog-child-name" class="modal-title pull-left"><b>Transfer Check Status</b></h1></div>
+ </div>
+ <div class="modal-body">
+   <div class="row" align="center">
+   </div>
+   <div class="row mrgbtm tableFixHead" style="overflow-y: scroll;height: 350px;">
+     <table class="table table-striped" style="">
+        <thead class="thead-dark">
+            <tr>
+               <th scope="col" width="*"><h2><b>Message</b></h2></th>
+            </tr>
+        </thead>
+         <tbody >
+            <tr *ngFor="let emp of utilityService.employeeStatusCheckList" style="font-size: 18px;">
+                <td>
+                    <h2><b>{{emp.StatusMsg}}</b></h2>
+                </td>
+            </tr>
+         </tbody>
+     </table>
+   </div>
+ </div>
+ <div class="modal-footer">
+    <div class="col-8">
+        
+     </div>
+     <div class="col-4">
+        <input type="button" class="btn-rectangle2 btn-green btn3d borderRadius5 font-weight-bold" style="width: 95%;    height: 90%;" 
+                      value="Ok" (click)="closeOpenEmployeeStatusCheckListModal();" />
+     </div>
+ </div>
+</div>
+</div>
+</div>
+
+<div bsModal #diagloNotAuthorized="bs-modal" class="modal fade" tabindex="-1"
+role="dialog" aria-labelledby="dialog-child-name">
+<div class="modal-dialog">
+<div class="modal-content">
+ <div class="modal-header" align="left" style="background-color: midnightblue;color: white;;">
+    <div class="col-sm-12"><h3><b>WARNING</b></h3></div>
+ </div>
+ <div class="modal-body">
+         <br/><br/><br/><br/><br/>
+        <h1 style="font-size: 50px;" align="center">You are not authorized to access this check.</h1>
+        <br/>
+</div>
+    <div class="modal-footer">
+            <div class="col-sm-12">
+                <input type="button" class="btn-rectangle2 btn-logoff btn3d font-weight-bold" style="width: 100%;" 
+                              value="CANCEL" (click)="closeDialogNotAuthorized();"/>
+             </div>
+     </div>
+ </div>
+
+</div>
+</div>

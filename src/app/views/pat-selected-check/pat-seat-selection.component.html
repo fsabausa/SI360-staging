@@ -1,0 +1,82 @@
+
+<div class="row">
+    <div class="col-sm-12" style="background: #D2D3D4; margin-bottom: 5px;">
+        <div class="row">
+            <div class="col-sm-6 allpadding5Width font-weight-bold">
+                <label for="" style="padding-left: 10px;font-size: 25px;">TABLE # :</label>&nbsp;
+                <label style="color:#1575BB;font-size: 25px;" class="allCaps"><b> {{utilityService.patTableName}}</b></label>
+            </div>
+            <div class="col-sm-6 allpadding5Width font-weight-bold">
+                <label for="" style="font-size: 25px;">PAYMENT OPTION :</label>&nbsp;
+                <label style="color:#1575BB;font-size: 25px;" class="allCaps"><b> {{utilityService.payment_Option}}</b></label>
+            </div>
+        </div>
+        <div class="row" style="width: 100%; height:100%;margin:0;padding: 0;">
+            <div class="allpadding5Width width100percent" style="height: 400px; overflow-y: scroll;">
+                <div class="table table-striped col-sm-12" style="border-style:solid;border-color:aliceblue;">
+                    <div class="row" style="background-color: #676769;">
+                        <div class="fontColorWhite col-sm-3 font-weight-bold">
+                            <label style="font-size: 25px;">SEAT NO.</label>
+                        </div>
+                        <div class="fontColorWhite col-sm-6 font-weight-bold">
+                            <label style="font-size: 25px;">ITEM DESCRIPTION</label>
+                        </div>
+                        <div class="fontColorWhite col-sm-3 font-weight-bold">
+                            <label style="font-size: 25px;">PRICE</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div pbs-row *ngFor="let g of utilityService.guestCheck; let i = index" 
+                                id="seatpaymentno{{i}}" [guest]="g" 
+                                class="row seat-selection {{getRowClassName(g)}}" 
+                                (click)="getSelectedSeatPayment(g.SeatNo,g.CheckNumber,g.PaidFlag,i)">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div *ngIf="utilityService.guestCheck.length > 6" class="rotate-vert-center">
+              <img width="40" height="40" alt="" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiBoZWlnaHQ9IjMycHgiIGlkPSLQodC70L7QuV8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0yNC4yODUsMTEuMjg0TDE2LDE5LjU3MWwtOC4yODUtOC4yODhjLTAuMzk1LTAuMzk1LTEuMDM0LTAuMzk1LTEuNDI5LDAgIGMtMC4zOTQsMC4zOTUtMC4zOTQsMS4wMzUsMCwxLjQzbDguOTk5LDkuMDAybDAsMGwwLDBjMC4zOTQsMC4zOTUsMS4wMzQsMC4zOTUsMS40MjgsMGw4Ljk5OS05LjAwMiAgYzAuMzk0LTAuMzk1LDAuMzk0LTEuMDM2LDAtMS40MzFDMjUuMzE5LDEwLjg4OSwyNC42NzksMTAuODg5LDI0LjI4NSwxMS4yODR6IiBmaWxsPSIjMTIxMzEzIiBpZD0iRXhwYW5kX01vcmUiLz48Zy8+PGcvPjxnLz48Zy8+PGcvPjxnLz48L3N2Zz4=" />
+            </div> -->
+        </div>
+    </div>
+</div>
+<div class="row" style="background: #343B45;">
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label class="col-form-label
+     fontColorWhite" style="font-size: 25px;"><b>Sub Total:</b></label>
+            </div>
+            <div class="col-sm-6">
+                <input type="text" disabled class="form-control" id="inputPassword" placeholder="{{utilityService.subTotal}}" value="{{utilityService.subTotal}}" style="height: 50px;font-size:25px;font-weight: bold;">
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label for="inputTax" class="col-form-label fontColorWhite font-weight-bold" style="text-align: right;font-size: 25px;"><b>Tax:</b></label>
+            </div>
+            <div class="col-sm-6">
+                <input type="text" disabled class="form-control" id="inputTax" placeholder="{{utilityService.totalTax}}" value="{{utilityService.totalTax}}" style="width: 98%;height: 50px;font-size:25px;font-weight: bold;">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label for="inputPassword" class="col-form-label fontColorWhite font-weight-bold" style="text-align: right;font-size: 25px;"><b>Total Amount:</b></label>
+            </div>
+            <div class="col-sm-6">
+                <input type="text" disabled class="form-control" id="inputPassword" placeholder="{{utilityService.grandtotal}}" value="{{utilityService.grandtotal}}" style="width: 98%;height: 50px;font-size:25px;font-weight: bold;">
+            </div>
+        </div>
+    </div>
+</div>

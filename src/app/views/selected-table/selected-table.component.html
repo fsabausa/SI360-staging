@@ -1,0 +1,272 @@
+<div style="height: 720px; width: 100%; overflow: hidden;" [class]="utilityService.setStatus">
+    <div class="container" id="selectedTableContainer">
+      <div class="row" cdkDropList [cdkDropListData]="utilityService.draggableRSOComponents" 
+          (cdkDropListDropped)="onItemDrop($event)"  cdkDropListOrientation="horizontal">
+
+          <div class="{{comp.AppClass}} rsoprimaryBackgroundColor" *ngFor="let comp of utilityService.draggableRSOComponents" cdkDrag style="padding: 0px; margin: 0px;">
+
+            <div *ngIf="comp.ControlPanel == 'rsoimagediv'" class="col-sm-12 rsoprimaryBackgroundColor">
+              <div class="col-sm-12">
+                <div class="text-align-center text-white labelsize14" id="tableDiv">
+                  <br /> <br />
+                  <div class="row">
+                    <div style="display: block; margin: auto; padding-top: 45px;    height: 275px;">
+                      <div class="col-sm-6">
+                        <img [src]="utilityService.selectedtableShape" style="width:170px;height:170px;" />
+                        <span style=" text-align: center; font-size: 35px;" (click)="openDialogForChangeTable()" class="setPositionIMGandLabel">{{utilityService.selectedtable}}</span>
+                        <div *ngFor="let seatnum of utilityService.iterateSeat" [ngStyle]="seatStyle(seatnum)" [class]="utilityService.seatClass" height="60" width="60">
+                          <img [src]="utilityService.seatUrl" id="Seatnumber{{seatnum}}" [class]="utilityService.seatImageClass" class="setPositionIMGandLabel" (click)="showConfirmation(seatnum)">
+                          <span [class]="utilityService.seatLabel"  class="setPositionIMGandLabel" (click)="showConfirmation(seatnum)" >{{seatnum}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <label class="label_Price font-weight-bold">ROOM : {{utilityService.selectedroom}}</label><br />
+                  <label class="label_Price font-weight-bold">TABLE : {{utilityService.selectedtable}} </label><br />
+                </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <input type="button" value="ADD SEAT" class="btn-room btn-primary btn3d font-weight-bold" (click)="onClickAddSeat(utilityService.globalInstance.SelectedLayoutTableId);" />
+                    <input type="button" value="ADD ORDER" class="btn-room btn-primary btn3d font-weight-bold" (click)="getbuttonActionRSO('ADD ORDER',null,null,null,null,null,null,true);" />
+                    <input type="button" value="BACK" (click)="getbuttonActionRSO('BACK TO FLOOR PLANS')" class="btn-room btn-primary btn3d font-weight-bold" style="white-space: normal;
+                                                                word-wrap: break-word;" />
+                  </div>
+                </div>
+              </div>
+              <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}"><svg height="30" width="30"><circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" /></svg></div>
+            </div>
+            <div *ngIf="comp.ControlPanel == 'rsodetaildiv'" class="col-sm-12 rsoBackgroundColorBody">
+              <div class="row rsoTopPanelBackgroundColor" id="SearchCustomerDiv">
+                <div class="col-sm-12">
+                  <div class="row" *ngIf="utilityService.showCustomerSearchDiv" style="margin-top: 5px;">
+                    <div class="col-sm-5">
+                      <form class="search-resident-form" style="margin-top: -5px;">
+                        <mat-form-field class="search-resident-full-width text-white">
+                          <input #trigger="matAutocompleteTrigger" type="text" style="background-color: white;font-size:25px;    height: 95px;color: #000;" id="SearchCustomerName" class="text-black input font-weight-bold" aria-label="Select customer" matInput [formControl]="myControl" [matAutocomplete]="auto" (input)="onInputChange($event)" value="{{value}}" (focus)="focusFunction()" (focusout)="focusOutFunction()" (keydown)="onKeydown($event)" autofocus  />
+                          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="font-weight-bold">
+                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option" >
+                              <h3 style="font-weight: bold;">{{option.Name}}</h3>
+                            </mat-option>
+                          </mat-autocomplete>
+                        </mat-form-field>
+                      </form>
+                    </div>
+                    <div class="col-sm-3">
+                      <button class="btn-ok btn-success btn3d font-weight-bold" (click)="getSelectedCustomer()">OK</button>
+                    </div>
+                    <div class="col-sm-4">
+                      <button class="btn-cancel btn-danger btn3d font-weight-bold" (click)="removeResident();" onclick="RemoveCustomerName();" type="button">REMOVE RESIDENT</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row rsoBackgroundColorBody" id="CustomerSearchDetailDiv">
+                <div class="col-sm-5" *ngIf="utilityService.showMealDiv">
+                  <div class="rsoBackgroundColorHeader titleDiv">&nbsp;</div>
+                  <div class="rsoBackgroundWhite" id='MealDiv'>
+                    <div class="container">
+                      <div class="row">
+                        <table class="table table-striped" >
+                          <tr *ngFor="let meal of utilityService.globalInstance.SelectedTableDetail.GetSaleItems">
+                            <td>
+                              <div class="col-sm-12"><label class="allCaps font-weight-bolder" style="font-size: 35px;"><b>{{meal.SeatNumber}}</b></label></div>
+                              <div class="col-sm-12"><label class="allCaps font-weight-bold" style="font-size: 25px;">{{meal.Description}}</label></div>
+                              <div class="col-sm-12"><label class="allCaps font-weight-bold" style="font-size: 25px;">{{meal.DietaryDesc}}</label></div>
+                              <div class="col-sm-12">
+                                <div class="row" *ngFor="let menuItem of meal.GetMenuItems">
+                                  <div class="col-sm-8"><label class="allCaps font-weight-bold" style="font-size: 25px;">{{menuItem.MenuItemName}}</label></div>
+                                  <div class="col-sm-4" align="right" ><label style="font-size: 25px;" class="font-weight-bold">{{menuItem.Price}}</label></div>
+                                </div>
+                              </div>
+
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-12" *ngIf="utilityService.showChangeMealPlanButton">
+                    <div class="row" style="margin-top: 5px;" *ngIf="utilityService.hasMealType">
+                      <input type="button" class="btn-change-mealPlan btn-primary btn3d font-weight-bold" value="CHANGE MEAL PLAN" (click)="openDialog(null,true)">
+                    </div>
+                  </div>
+                  <div *ngIf="returnTotalOrderedMeal() >= 8" class="rotate-vert-center">
+                    <img width="40" height="40" alt="" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiBoZWlnaHQ9IjMycHgiIGlkPSLQodC70L7QuV8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0yNC4yODUsMTEuMjg0TDE2LDE5LjU3MWwtOC4yODUtOC4yODhjLTAuMzk1LTAuMzk1LTEuMDM0LTAuMzk1LTEuNDI5LDAgIGMtMC4zOTQsMC4zOTUtMC4zOTQsMS4wMzUsMCwxLjQzbDguOTk5LDkuMDAybDAsMGwwLDBjMC4zOTQsMC4zOTUsMS4wMzQsMC4zOTUsMS40MjgsMGw4Ljk5OS05LjAwMiAgYzAuMzk0LTAuMzk1LDAuMzk0LTEuMDM2LDAtMS40MzFDMjUuMzE5LDEwLjg4OSwyNC42NzksMTAuODg5LDI0LjI4NSwxMS4yODR6IiBmaWxsPSIjMTIxMzEzIiBpZD0iRXhwYW5kX01vcmUiLz48Zy8+PGcvPjxnLz48Zy8+PGcvPjxnLz48L3N2Zz4=" />
+                  </div>
+                </div>
+                <div class="col-sm-7">
+                  <div class="col-sm-12" *ngIf="utilityService.showCustomerDetail">
+                    <div class="rsoBackgroundColorHeader titleDiv font-weight-bold">{{utilityService.customerDetail.Name}}</div>
+                    <div class="rsoBackgroundWhite" id="CustomerDetailDiv">
+                      <div class="container">
+                        <table class="table-bordered" style="width:100%">
+                          <tr>
+                            <td colspan="2" align="center">
+                              <div class="circular--portrait">
+                                <img [src]="utilityService.customerUrlPhoto" (click)="openUploadPhoto()" height="70" width="70" align="center" />
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p style="font-size: 30px;" class="font-weight-bold">LOCATION</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.customerDetail.Credit}}</h4>
+                            </td>
+                            <td>
+                              <p style="font-size: 30px;" class="font-weight-bold">MEAL PLAN POINT</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.customerDetail.MealPlanPoint}}</h4>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p style="font-size: 30px;" class="font-weight-bold">MEAL PLAN</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.customerDetail.MealPlan}}</h4>
+                            </td>
+                            <td>
+                              <p style="font-size: 30px;" class="font-weight-bold">BALANCE</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.customerDetail.Balance}}</h4>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2" align="center">
+                              <p style="font-size: 30px;" class="font-weight-bold">DIETARY PREFERENCES</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.customerDetail.DietaryRestriction}}</h4>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2" align="center">
+                              <p style="font-size: 30px;" class="font-weight-bold">LAST VISIT</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.customerDetail.LastVisit}}</h4>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12" *ngIf="utilityService.showCustomerDetail2">
+                    <div class="rsoBackgroundColorHeader titleDiv font-weight-bold">{{utilityService.globalInstance.SelectedCustomerDetail.CustomerName}}</div>
+                    <div class="rsoBackgroundWhite" id="CustomerDetailDiv2">
+                      <div class="container">
+                        <table class="table-bordered" style="width:100%">
+                          <tr>
+                            <td colspan="2" align="center">
+                              <div class="circular--portrait">
+                                <img [src]="utilityService.customerUrlPhoto" (click)="openUploadPhoto()" height="70" width="70" align="center" />
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p style="font-size: 30px;" class="font-weight-bold">LOCATION</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.globalInstance.SelectedCustomerDetail.Credit}}</h4>
+                            </td>
+                            <td>
+                              <p style="font-size: 30px;" class="font-weight-bold">MEAL PLAN POINT</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.globalInstance.SelectedCustomerDetail.MealPlanPoint}}</h4>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <p style="font-size: 30px;" class="font-weight-bold">MEAL PLAN</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.globalInstance.SelectedCustomerDetail.MealPlan}}</h4>
+                            </td>
+                            <td>
+                              <p style="font-size: 30px;" class="font-weight-bold">BALANCE</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.globalInstance.SelectedCustomerDetail.Balance}}</h4>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2" align="center">
+                              <p style="font-size: 30px;" class="font-weight-bold">DIETARY PREFERENCES</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.globalInstance.SelectedCustomerDetail.DietaryRestriction}}</h4>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2" align="center">
+                              <p style="font-size: 30px;" class="font-weight-bold">LAST VISIT</p>
+                              <h4 style="display: block;font-size: 30px;" class="textcolor-blue font-weight-bold">{{utilityService.globalInstance.SelectedCustomerDetail.LastVisit}}</h4>
+                            </td>
+                          </tr>
+                        </table>
+                        <div style="bottom: 3%;" class="rotate-vert-center">
+                          <img width="40" height="40" alt="" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiBoZWlnaHQ9IjMycHgiIGlkPSLQodC70L7QuV8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0yNC4yODUsMTEuMjg0TDE2LDE5LjU3MWwtOC4yODUtOC4yODhjLTAuMzk1LTAuMzk1LTEuMDM0LTAuMzk1LTEuNDI5LDAgIGMtMC4zOTQsMC4zOTUtMC4zOTQsMS4wMzUsMCwxLjQzbDguOTk5LDkuMDAybDAsMGwwLDBjMC4zOTQsMC4zOTUsMS4wMzQsMC4zOTUsMS40MjgsMGw4Ljk5OS05LjAwMiAgYzAuMzk0LTAuMzk1LDAuMzk0LTEuMDM2LDAtMS40MzFDMjUuMzE5LDEwLjg4OSwyNC42NzksMTAuODg5LDI0LjI4NSwxMS4yODR6IiBmaWxsPSIjMTIxMzEzIiBpZD0iRXhwYW5kX01vcmUiLz48Zy8+PGcvPjxnLz48Zy8+PGcvPjxnLz48L3N2Zz4=" />
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                  <div class="col-sm-12" *ngIf="utilityService.showButtonAssignSeat">
+                    <div style="bottom: 120%;" class="rotate-vert-center">
+                      <img width="40" height="40" alt="" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDMyIDMyIiBoZWlnaHQ9IjMycHgiIGlkPSLQodC70L7QuV8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAzMiAzMiIgd2lkdGg9IjMycHgiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxwYXRoIGQ9Ik0yNC4yODUsMTEuMjg0TDE2LDE5LjU3MWwtOC4yODUtOC4yODhjLTAuMzk1LTAuMzk1LTEuMDM0LTAuMzk1LTEuNDI5LDAgIGMtMC4zOTQsMC4zOTUtMC4zOTQsMS4wMzUsMCwxLjQzbDguOTk5LDkuMDAybDAsMGwwLDBjMC4zOTQsMC4zOTUsMS4wMzQsMC4zOTUsMS40MjgsMGw4Ljk5OS05LjAwMiAgYzAuMzk0LTAuMzk1LDAuMzk0LTEuMDM2LDAtMS40MzFDMjUuMzE5LDEwLjg4OSwyNC42NzksMTAuODg5LDI0LjI4NSwxMS4yODR6IiBmaWxsPSIjMTIxMzEzIiBpZD0iRXhwYW5kX01vcmUiLz48Zy8+PGcvPjxnLz48Zy8+PGcvPjxnLz48L3N2Zz4=" />
+                    </div>
+                  </div>
+                  <div class="col-sm-12" *ngIf="utilityService.showButtonReAssignSeatAndRemoveSeat">
+                    <div class="row" style="margin-top: 5px;">
+                      <div class="col-sm-6">
+                        <input type="button" class="btn-reassignSeat btn-primary btn3d font-weight-bold" value="REASSIGN SEAT" (click)="reassignSeat();">
+                      </div>
+                      <div class="col-sm-6">
+                        <input type="button" class="btn-removeSeat btn-primary btn3d font-weight-bold" value="REMOVE SEAT" (click)="removeseat(utilityService.globalInstance.SelectedCustomerDetail.CustomerId,utilityService.selectedSeat)">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12" *ngIf="utilityService.showButtonMoveToSeatAndRemoveSeat">
+                    <div class="row" style="margin-top: 5px;">
+                      <div class="col-sm-6">
+                        <input type="button" class="btn-reassignSeat btn-primary btn3d font-weight-bold" value="MOVE TO SEAT {{utilityService.selectedSeat}}" (click)="onClickMoveSeat(utilityService.globalInstance.SelectedLayoutTableId,utilityService.globalInstance.SelectedCustomerDetail.CustomerId,utilityService.prevAssignSeat,utilityService.selectedSeat);">
+                      </div>
+                      <div class="col-sm-6">
+                        <input type="button" class="btn-removeSeat btn-primary btn3d font-weight-bold" value="REMOVE SEAT" (click)="removeseat(utilityService.globalInstance.SelectedCustomerDetail.SaleId,utilityService.globalInstance.SelectedCustomerDetail.CustomerId,utilityService.selectedSeat)">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-12" *ngIf="utilityService.menuDiv">
+                    <div class="row">
+                      <div class="col-sm-12" style="background-color:gainsboro">
+                        <ul>
+                          <li style="float: left;" *ngFor="let _menu of utilityService._menuDescription">
+                            <input #menuButtonAction class="btn btn-primary btn3d" style="font-size:12px;white-space: normal;
+                                                                                                                                    word-wrap: break-word;" type="button" value="{{_menu}}" (click)="menuItemGoTo(_menu)" />
+                          </li>
+                          <li style="float: left;">
+                            <input type="button" value="Pay Check" class="btn btn-primary btn3d"
+                                   (click)="getbuttonActionPAT('PATCheckSelection')" style="font-size:12px;white-space: normal;
+                                                                                                                            word-wrap: break-word;" />
+                          </li>
+                          <li style="float: left;white-space: normal;
+                                                                                                                            word-wrap: break-word;">
+                            <input type="button" value="User Function" class="btn btn-primary btn3d"
+                                   style="font-size:12px;white-space: normal;
+                                                                                                                                    word-wrap: break-word;" />
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-sm-12 rsoBackgroundWhite" style="height: 380px;overflow-y: scroll;">
+                        <ul>
+                          <li style="float: left;" *ngFor="let _item of utilityService._menuItems">
+                            <input #menuItem class="btn btn-primary btn3d" style="font-size:12px; white-space: normal;
+                                                                                                                                    word-wrap: break-word;" type="button" value="{{_item.ItemDescription}}" (click)="getItemName(_item.ItemDescription)" />
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div cdkDragHandle class="handler {{utilityService.handlerStatusInfo}}"><svg height="30" width="30"><circle cx="15" cy="15" r="10" stroke="black" stroke-width="3" fill="white" /></svg></div>
+            </div>
+            
+          </div>
+      </div>
+    </div>
+    <div id="container-keyboard" class="hide">
+      <div style="width: 100%; background: black;">
+        <input type="button" value="X" class="btn btn-danger" (click)="closeKeyboard()"
+          style="float: right; width: 50px; height: 50px; font-size: 14pt;" />
+      </div>
+      <div class="simple-keyboard" (click)="open(); $event.stopPropagation()"></div>
+    </div>
+</div>

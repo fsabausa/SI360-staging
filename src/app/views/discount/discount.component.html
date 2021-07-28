@@ -1,0 +1,88 @@
+<div class="discount-frame rsoBackgroundColorBody">
+	<div class="col-12">
+		<div class="row discount-title">
+			<div class="col-12" style="display: inline-block; text-align: left;">
+				<h3><b>Discount Check Items</b> </h3>
+			</div>
+		</div>
+		<div class="row" style="width:100%;padding:0px;margin:0px;">
+			<div class="col-12">
+				<div class="row discount-header">
+					<div class="col-12">
+						<h5><b>Discount Type</b></h5>
+					</div>
+				</div>
+				<div class="row">
+					<div style="width: 100%;">
+						<select style="width:100%; font-size:26px;" [(ngModel)]="discountId" 
+							#selectDiscount 
+							(change)='onDiscountSelected(selectDiscount.value)'>
+							<option>Not Specified</option>
+							<option *ngFor="let discount of utilityService.discountList" 
+								value="{{discount.DiscountIndex}}">
+								{{discount.DiscountName}}
+							</option>
+						</select>
+					</div>
+				</div>
+				<div class="row discount-header" style="margin-top: 1px;">
+					<div class="col-12">
+						<h5><b>Discount Amount</b></h5>
+					</div>
+				</div>
+				<div class="row">
+					<div style="width: 100%;">
+						<input style="width:100%; font-size:26px;" disabled="true" type="text" [(ngModel)]="discountAmount" placeholder="$0.00" />
+					</div>
+				</div>
+				<div class="row discount-header" style="margin-top: 1px;">
+					<div class="col-12">
+						<h5><b>Discount Reasons</b></h5>
+					</div>
+				</div>
+				<div class="row">
+					<div style="width: 100%;">
+						<select style="width:100%; font-size:26px;" [(ngModel)]="reasonId">
+							<option>Not Specified</option>
+							<option *ngFor="let reason of utilityService.discountReasonList; let i = index" 
+							value="{{reason.ReasonIndex}}" [attr.selected]="i == 0 ? true : null">{{reason.ReasonName}}</option>
+						</select>
+					</div>
+				</div>
+				<!-- <div class="row discount-header" style="margin-top: 1px;">
+					<div class="col-12">
+						<h5><b>Overall Discount</b></h5>
+					</div>
+				</div>
+				<div class="row">
+					<div style="width: 100%;">
+						<input style="width:100%; font-size:26px;" type="text" [(ngModel)]="overallDiscount" placeholder="$0.00" />
+					</div>
+				</div> -->	
+			</div>
+		</div>
+		<div class="row" style="margin-top: 3px;">
+			<div class="col-5">
+				<button style="width: 200px;" class="btn btn-primary btn3d font-weight-bold" (click)="openNumberPad()" *ngIf="showAmountBtn">Amount</button>
+			</div>
+			<div align="right" class="col-7 row" style="padding:0px; margin:0px;">
+				<div class="col-5">
+					<button _ngcontent-aip-c14="" class="btn btn-primary btn3d font-weight-bold" style="width: 100%;" (click)="saveDiscount()">OK</button>
+				</div>
+				<div class="col-7">
+					<button class="btn btn-logoff btn3d font-weight-bold" style="width: 100%;" (click)="onClickDONE()">Cancel</button>
+				</div>
+			</div>
+			<!-- <div class="col-6" align="right">
+				<div class="row">
+					<div class="col-5">
+						<button style="width: 100%;" class="btn btn-primary btn3d font-weight-bold" (click)="saveDiscount()">OK</button>
+					</div>
+					<div class="col-7">
+						<button style="width: 100%;" class="btn btn-logoff btn3d font-weight-bold" (click)="onClickDONE()">Cancel</button>
+					</div>
+				</div>
+			</div> -->
+		</div>
+	</div>
+</div>

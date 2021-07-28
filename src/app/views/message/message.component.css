@@ -1,0 +1,30 @@
+#txtMessage{
+    background-color: white;
+	height: 80px;
+	width: 100%;
+	margin-top: 5px;
+	margin-left: 15px;
+	font-size: 45px;
+	border-style: groove;
+}
+
+#btnSend{
+	margin-top: 5px;
+	margin-right: 5px;
+	width: 90%;
+	margin-bottom: 5px;
+}
+
+#btnClose{
+	margin-top: 5px;
+	margin-right: 5px;
+	width: 90%;
+	margin-bottom: 5px;
+}
+
+.remove-special, #mat-dialog-0{
+  padding: 0px !important;
+  margin: 0px !important;
+  border:0px !important;
+  max-width: 100% !important;
+}

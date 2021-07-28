@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>POS</title>
+  <base href="./">
+  <meta name="viewport" content="ice-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script type="text/javascript" src="./assets/js/epos-2.16.0.js"></script>
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
+
+<script>
+var ipPrinter = '10.0.0.91';
+var address = 'http://'+ipPrinter+'/cgi-bin/epos/service.cgi?devid=local_printer&timeout=10000';
+ //Create an ePOS-Print object
+ var epos = new epson.ePOSPrint(address);
+
+
+ epos.oncoveropen = function () {
+ alert('coveropen');
+ };
+
+ epos.ondraweropen = function () {
+   alert('drawer open');
+ }
+
+function RemoveCustomerName(){
+	$('#SearchCustomerName').val('');
+}
+
+function startMonitor() {
+  console.clear();
+
+
+  epos.ondraweropen = function (res) {
+    if (!res.success) {
+    alert('not success on ondraweropen');
+    } else {
+    alert('Success on ondraweropen');
+    }
+  };
+  epos.onreceive = function (res) { 
+    if (!res.success) {
+    alert('not success on receive');
+    } else {
+    alert('Success on receive');
+    }
+  }
+  epos.open();
+  console.log(epos);
+}
+
+function noSale(){
+
+  console.clear();
+  try{
+  /*   startMonitor(); */
+     buildMessage(); 
+     /* var address = 'http://'+ ipPrinter +'/cgi-bin/epos/service.cgi?devid=local_printer';
+    console.log(address);
+    var epos = new epson.ePOSPrint(address);
+    console.log(epos);
+    epos.ondraweropen = function (res) {
+
+      if (!res.success) {
+        alert('Error on openning cash drawer');
+      } else {
+        alert('Drawer open')
+      }
+    };
+
+    epos.oncoveropen = function () {
+    alert('coveropen');
+    }; */
+
+    epos.open(); 
+   
+  }
+  catch(err){
+    alert(err);
+  }
+ 
+}
+
+function startMonitor(){
+  epos.open();
+  console.log(epos);
+}
+function testCCReceipt() {
+  var data = JSON.parse(localStorage.getItem('ccTransDetail').toString()); 
+  var parseData = JSON.parse(data);
+  console.log(parseData);
+  console.log(parseData.Entry);
+}
+
+function parseJSON(data) {
+    return window.JSON && window.JSON.parse ? window.JSON.parse( data ) : (new Function("return " + data))(); 
+}
+
+function buildMessage() {
+ //Create an ePOS-Print Builder object
+ var builder = new epson.ePOSBuilder();
+
+ var data = JSON.parse(localStorage.getItem('ccTransDetail').toString()); 
+ var parseData = JSON.parse(data);
+ //Create a print document
+ builder.addTextLang('en')
+ builder.addTextSmooth(true);
+ builder.addTextFont(builder.FONT_A);
+ builder.addTextSize(3, 3);
+ builder.addText('Test open cash drawer');
+
+
+/*  builder.addText('500 North Jupiter Drive');
+ builder.addText('Suite 100');
+ builder.addText(' ');
+ builder.addText(parseData.TransactionDate);
+ builder.addText(' ');
+ builder.addText('Merchant ID : ' + parseData.MerchantID);
+ builder.addText('Terminal ID : ' + parseData.TerminalID);
+ builder.addText(' ');
+ builder.addText('Reference # : ' + parseData.ReferenceNumber);
+ builder.addText('Account # : ' + parseData.AccountNumber);
+ builder.addText('LOGO: ' + parseData.Logo);
+ builder.addText(' ');
+ builder.addText('Transaction ID : ' + parseData.TransactionID);
+ builder.addText('Approval Code : ' + parseData.ApprovalCode);
+ builder.addText('Response Code : ' + parseData.ResponseCode);
+ builder.addText(' ');
+ builder.addText('Approved');
+ builder.addText('Sale : ');
+ builder.addText('x_________________________________');
+ builder.addText('I agree to pay the store total amount according to the card  issuer agreement');
+ builder.addText('Thank you'); */
+ builder.addCut(builder.CUT_FEED);
+ //Acquire the print document
+ var request = builder.toString();
+/*  alert(request); */
+
+ //Set the end point address
+ var address = 'http://'+ipPrinter+'/cgi-bin/epos/service.cgi?devid=local_printer&timeout=10000';
+ //Create an ePOS-Print object
+ var epos = new epson.ePOSPrint(address);
+
+ epos.onerror = function (err) { 
+  var status = err.status;
+  var text = err.responseText; 
+  console.log('Error  ' + status + " | " + text); };
+ epos.onreceive = function (res) {
+
+  // Obtain the print result and error code
+ var msg = 'Print' + (res.success ? 'Success' : 'Failure') + '\nCode:' + res.code 
++ '\nStatus:\n';
+ // Obtain the printer status
+ var asb = res.status;
+ if (asb & epos.ASB_NO_RESPONSE) {
+ msg += ' No printer response\n';
+ }
+ if (asb & epos.ASB_PRINT_SUCCESS) {
+ msg += ' Print complete\n';
+ }
+ if (asb & epos.ASB_DRAWER_KICK) {
+ msg += ' Status of the drawer kick number 3 connector pin = "H"\n';
+ }
+ if (asb & epos.ASB_OFF_LINE) {
+ msg += ' Offline status\n';
+ }
+ if (asb & epos.ASB_COVER_OPEN) {
+ msg += ' Cover is open\n';
+ }
+ if (asb & epos.ASB_PAPER_FEED) {
+ msg += ' Paper feed switch is feeding paper\n';
+ }
+ if (asb & epos.ASB_WAIT_ON_LINE) {
+ msg += ' Waiting for online recovery\n';
+ }
+ if (asb & epos.ASB_PANEL_SWITCH) {
+ msg += ' Panel switch is ON\n';
+ }
+ if (asb & epos.ASB_MECHANICAL_ERR) {
+ msg += ' Mechanical error generated\n';
+ }
+ if (asb & epos.ASB_AUTOCUTTER_ERR) {
+ msg += ' Auto cutter error generated\n';
+ }
+ if (asb & epos.ASB_UNRECOVER_ERR) {
+ msg += ' Unrecoverable error generated\n';
+ }
+ if (asb & epos.ASB_AUTORECOVER_ERR) {
+ msg += ' Auto recovery error generated\n';
+ }
+ if (asb & epos.ASB_RECEIPT_NEAR_END) {
+ msg += ' No paper in the roll paper near end detector\n';
+ }
+ if (asb & epos.ASB_RECEIPT_END) {
+ msg += ' No paper in the roll paper end detector\n';
+ }
+ if (asb & epos.ASB_BUZZER) {
+ msg += ' Sounding the buzzer (limited model)\n';
+ }
+ if (asb & epos.ASB_SPOOLER_IS_STOPPED) {
+ msg += ' Stop the spooler\n';
+ }
+ //Display in the dialog box
+ 
+ alert(msg);
+
+ } 
+
+ epos.ondraweropen = function (res) {
+    if (!res.success) {
+        alert('Error on openning cash drawer');
+    } else {
+        alert('Drawer open')
+    }
+  };
+ epos.open();
+ console.log(epos)
+ //Send the print document
+ epos.send(request);
+ }
+</script>
+
+

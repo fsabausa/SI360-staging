@@ -1,0 +1,25 @@
+<div class="row">
+	<div class="col-md-12">
+		<h2 [ngStyle]="colorLabel()">{{utilityService.confirmMessage}}</h2>
+		<br><br>
+		<div class="col-sm-12">
+			<div class="row" style="margin: 15px;"  *ngIf="utilityService.okButtonOnly;else elseBlock">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8" style="align-items: center;">
+				    <input style="font-weight: bold; padding: 15px; font-size: 25px; height: 80px;" type="button" value="OK" class="rso-button" (click)="onClick(false)">
+				</div>
+				<div class="col-sm-2"></div>
+			</div>
+			<ng-template #elseBlock>
+				<div class="row" style="margin: 15px;">
+					<div class="col-sm-6">
+						<input style="font-weight: bold; padding: 15px; font-size: 25px; height: 80px;" type="button" value="YES" class="rso-button" (click)="onClick(true)">
+					</div>
+					<div class="col-sm-6">
+						<input style="font-weight: bold; padding: 15px; font-size: 25px; height: 80px;" type="button" value="NO" class="rso-button" (click)="onClick(false)">
+					</div>
+				</div>
+			</ng-template>
+		</div>
+	</div>
+</div>

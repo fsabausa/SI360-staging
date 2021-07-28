@@ -1,0 +1,10 @@
+[
+    {
+        "LocalBaseAddress" : { 
+            "BaseAddress" : "http://localhost:49650/"
+        },
+        "TimeLimitation" : { 
+            "ResponseTime" : "1000"
+        }       
+    }
+]   

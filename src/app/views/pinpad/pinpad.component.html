@@ -1,0 +1,35 @@
+
+<div style="width:100%; height: 100%; padding: 5px; background-color: #021CA3;">
+  <div class="row">
+    <div class="col-sm-12">
+        <div class="col-sm-12 default-border" align="right"
+            style="background: white; height: 70px; padding-right: 20px;">
+            <p id="inputLabel" style="font-size: 36px; padding: 2px; width: 90%; vertical-align: bottom;">{{inputed_numeric}}</p>
+          </div>
+    </div>
+  </div>
+  <div class="row" style="padding: 5px;">
+    <div class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-4" *ngFor="let button of numericButtons">
+          <input type="button"
+            class="btn btn-primary btn3d" value={{button}} #myValue 
+            (click)="getbuttonValue(myValue.value);"/>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12" *ngIf="utilityService.showbtnTotalPayment">
+          <input type="button" class="btn-rectangle btn-primary btn3d" value="DONE" (click)="getbuttonValue('DONE')">
+        </div>
+   <!--      <div class="col-sm-12">
+          <input type="button" class="btn-rectangle btn-primary btn3d" value="TIP" (click)="getbuttonValue('TIP')">
+        </div> -->
+       <!--  <div class="col-sm-4">
+          <input type="button" class="btn btn-primary btn3d" value=" < " (click)="getbuttonValue('CLEAR')">
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+

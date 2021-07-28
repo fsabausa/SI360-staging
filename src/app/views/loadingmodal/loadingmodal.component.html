@@ -1,0 +1,14 @@
+<div [ngSwitch]="utilityService.loadingType">
+    <div *ngSwitchCase="'defaultLoading'">
+        <img src="assets/img/loading1.gif" width="100%" height="100%" />
+    </div>
+    <div *ngSwitchCase="'uploading'">
+        <img src="assets/img/Uploading.gif" width="100%" height="100%" />
+        <br/><br/>
+        <label>Uploading offline transaction to server.</label>
+    </div>
+    <div *ngSwitchCase="'loggingOut'">
+        <img src="assets/img/logout.gif" width="100%" height="100%" />
+    </div>
+</div>
+

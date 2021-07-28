@@ -1,0 +1,136 @@
+{
+  "name": "pos",
+  "version": "7.21.715",
+  "main": "main.js",
+  "scripts": {
+    "ng": "ng",
+    "clean": "rimraf dist",
+    "prestart": "npm run build",
+    "start": "electron .",
+    "prebuild": "npm run clean",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "electron": "ng build --prod && electron .",
+    "electron-build": "ng build --prod && electron . --era",
+    "prerelease": "npm run build -- --prod",
+    "release": "electron-builder"
+  },
+  "engines": {
+    "node": "6.0.0",
+    "npm": "3.8.7"
+  },
+  "private": true,
+  "dependencies": {
+    "@alyle/ui": "^2.9.4",
+    "@angular/animations": "^8.0.0",
+    "@angular/cdk": "^8.0.0",
+    "@angular/common": "^8.0.0",
+    "@angular/compiler": "^8.0.0",
+    "@angular/core": "^8.0.0",
+    "@angular/forms": "^8.0.0",
+    "@angular/material": "^7.3.7",
+    "@angular/platform-browser": "^8.0.0",
+    "@angular/platform-browser-dynamic": "^8.0.0",
+    "@angular/platform-server": "^8.0.0",
+    "@angular/router": "^8.0.0",
+    "@ng-idle/core": "^8.0.0-beta.4",
+    "@ng-idle/keepalive": "^8.0.0-beta.4",
+    "@types/jquery": "^3.3.31",
+    "alert-node": "^1.2.7",
+    "angular2-moment": "^1.9.0",
+    "bluebird": "^3.5.5",
+    "bootstrap": "^4.3.1",
+    "bootstrap-electron": "^1.3.0",
+    "chroma-js": "^2.0.6",
+    "core-js": "^3.1.3",
+    "croppie": "^2.6.4",
+    "electron-log": "^4.2.4",
+    "electron-packager": "^14.2.1",
+    "electron-updater": "^4.3.1",
+    "hammerjs": "^2.0.8",
+    "is-reachable": "^3.1.0",
+    "jquery": "^3.4.1",
+    "lodash": "^4.17.15",
+    "material-design-icons": "^3.0.1",
+    "ng5-slider": "^1.2.4",
+    "ngx-bootstrap": "^2.0.5",
+    "ngx-bootstrap-modal": "^2.0.1",
+    "ngx-croppie": "^1.1.0",
+    "ngx-order-pipe": "^2.0.4",
+    "ngx-toastr": "^9.2.0",
+    "node-modules": "^1.0.1",
+    "npm": "^6.11.3",
+    "require": "^2.4.20",
+    "rxjs": "^6.5.0",
+    "thenby": "^1.3.3",
+    "tslib": "^1.10.0",
+    "typescript": "^3.4.3",
+    "typescript-require": "^0.2.10",
+    "zone.js": "^0.9.1"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^0.800.0",
+    "@angular/cli": "^8.0.0",
+    "@angular/compiler-cli": "^8.0.0",
+    "@angular/language-service": "^8.0.0",
+    "@types/angular": "^1.6.56",
+    "@types/croppie": "^2.5.4",
+    "@types/jasmine": "^3.5.10",
+    "@types/jasminewd2": "^2.0.7",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^13.9.3",
+    "codelyzer": "^5.2.1",
+    "electron": "^3.1.13",
+    "electron-builder": "^22.4.1",
+    "jasmine-core": "^3.5.0",
+    "jasmine-spec-reporter": "^5.0.1",
+    "karma": "^4.4.1",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-cli": "^2.0.0",
+    "karma-coverage-istanbul-reporter": "^2.1.0",
+    "karma-jasmine": "^3.1.1",
+    "karma-jasmine-html-reporter": "^1.5.2",
+    "protractor": "^5.4.3",
+    "rxjs-tslint": "^0.1.7",
+    "ts-node": "~7.0.0",
+    "tslint": "^6.1.0",
+    "webpack": "^4.42.1"
+  },
+  "peerDependencies": {
+    "typescript": "3.4.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fsabausa/SI360-staging.git"
+  },
+  "build": {
+    "appId": "com.electron.SI360",
+    "productName": "SI360",
+    "copyright": "Copyright © 2020",
+    "buildVersion": "7.20.0313",
+    "files": [
+      "main.js",
+      "dist/sipos"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": false,
+      "runAfterFinish": true
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "fsaba0818",
+        "repo": "SI360-staging.git",
+        "token": "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"
+      }
+    ]
+  }
+}
